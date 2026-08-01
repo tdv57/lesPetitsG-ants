@@ -40,7 +40,6 @@ export async function getSupabaseArticleDeLaSaison() : Promise<VideoSelectType |
 
 }
 
-
 export async  function getVideoArticleDeLaSaison() {
     const d = await getSupabaseArticleDeLaSaison();
     if (!d) return null;
@@ -85,8 +84,9 @@ function getAge(age: number, type_age: "ANS" | "MOIS") : string {
     if( !age || age < 0 || !type_age || (type_age !== "ANS" && type_age !== "MOIS")) {
         return "";
     }
+    console.log("getAge : ", age, type_age);
     if (type_age === "ANS") {
-        if (age === 1 || age === 0) {
+        if (Number(age) === 1 || Number(age) === 0) {
             return "Dès " + age + " an";
         } else {
             return "Dès " + age + " ans";

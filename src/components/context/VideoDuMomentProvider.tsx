@@ -27,7 +27,7 @@ export function VideoDuMomentProvider({children}: {children: ReactNode}) {
         getVideosDuMoment().then((v) => {
             setVideosDuMoment(v);
         })
-    })
+    }, [])
 
     return (
         <VideoDuMomentContext.Provider value={{videosDuMoment, setVideosDuMoment}}>
