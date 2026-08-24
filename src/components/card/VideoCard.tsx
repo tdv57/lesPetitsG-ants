@@ -44,18 +44,23 @@ export const VideoCard = forwardRef<HTMLDivElement, VideoCardProp>(({src, titre,
          <h2 style={{color: COLORS.primary, fontFamily: "Arial Rounded MT Bold"}} className="text-lg sm:text-xl py-4 px-4 md:py-8 md:px-8 lg:px-12 lg:py-12 text-center font-extrabold">
           {titre && <h3>{titre}</h3>}
           {age && <h3>{age}</h3>}
-          </h2>
-        <div ref={ref} className=" p-4 sm:p-0 sm:pb-8 w-80 sm:w-90 md:w-100 ">
-            <div
-              className=" relative flex flex-col items-center overflow-hidden"
-            >
-                <video  muted loop disablePictureInPicture  disableRemotePlayback ref={videoRef} className="  rounded-lg w-9/10 ">
-                  <source src={src} />
-                  Ton navigateur ne supporte pas la vidéo.
-                </video>
-              <VideoPlayerCard videoRef={videoRef} size={size}/>
+          </h2>         
+          <div ref={ref} className="p-4 sm:p-0 sm:pb-8 w-80 sm:w-100 md:w-100">
+              <div className="relative flex flex-col items-center justify-center overflow-hidden h-60 sm:h-72 md:h-80">
+                  <video 
+                      controls 
+                      muted 
+                      loop 
+                      disablePictureInPicture 
+                      disableRemotePlayback 
+                      ref={videoRef} 
+                      className="rounded-lg max-w-full max-h-full w-auto h-auto object-contain"
+                  >
+                      <source src={src} />
+                      Ton navigateur ne supporte pas la vidéo.
+                  </video>
+              </div>
           </div>
-        </div>  
       </div>
   </div>
 

@@ -1,23 +1,22 @@
-import { JEUX_DE_SOCIETE } from "../variables/jeuxDeSociete";
-import {JOUETS} from "../variables/jouets";
-import { PELUCHE } from "../variables/peluche";
+import { mapToJeuDeSocieteSelect, mapToJouetSelect, mapToPelucheSelect } from "../mapper/ImageMapper";
+import { getImageByType } from "./ImageService";
 
-export function getJouets() {
-    return JOUETS;
+export async function getJouets() {
+    return (await getImageByType("JOUET")).map((jouet) => mapToJouetSelect(jouet));
 }
 
-export function getPeluches() {
-    return PELUCHE;
+export async function getPeluches() {
+    return (await getImageByType("PELUCHE")).map((peluche) => mapToPelucheSelect(peluche));
 }
 
-export function getJeuxDeSociete() {
-    return JEUX_DE_SOCIETE;
+export async function getJeuDeSocietes() {
+    return (await getImageByType("JEU DE SOCIETE")).map((jeuDeSociete) => mapToJeuDeSocieteSelect(jeuDeSociete));
 }
 
-export const NOMS_ARTICLES : NOMS_ARTICLES_TYPE[] = ["JOUETS", "PELUCHES", "JEUX DE SOCIETE"];
-export type NOMS_ARTICLES_TYPE = "JOUETS" | "PELUCHES" | "JEUX DE SOCIETE";
+export const NOMS_ARTICLES : NOMS_ARTICLES_TYPE[] = ["JOUET", "PELUCHE", "JEU DE SOCIETE"];
+export type NOMS_ARTICLES_TYPE = "JOUET" | "PELUCHE" | "JEU DE SOCIETE";
 export const ArticleFunctionMapping = {
     "JOUETS": getJouets,
     "PELUCHES": getPeluches,
-    "JEUX DE SOCIETE": getJeuxDeSociete
+    "JEU DE SOCIETE": getJeuDeSocietes
 };

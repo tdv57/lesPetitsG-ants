@@ -2,12 +2,13 @@ import { COLORS } from "../../variables/couleur";
 import {fetchMARQUES} from "../../service/MarqueService";
 import MarqueCard from "../card/MarqueCard";
 import { useEffect, useRef, useState } from "react";
+import type { IMAGE_SELECT_TYPE, MarqueSelect } from "../../types/ImageType";
 
 export default function Marques() {
     
     const LIMITE = 9;
     const [page, setPage] = useState(1);
-    const [marquesInPage, setMarquesInPage] = useState(fetchMARQUES(1, LIMITE));
+    const [marquesInPage, setMarquesInPage] = useState<MarqueSelect[]>([]);
     const [hasMarquesToFetch, setHasMarquesToFetch] = useState(true);
     const loaderRef = useRef<HTMLDivElement | null>(null);
     
@@ -28,22 +29,35 @@ export default function Marques() {
         }
 
         return () => observer.disconnect();
+    }, [hasMarquesToFetch]);
+
+     useEffect(() => {
+        fetchMARQUES(1, LIMITE).then((nextMarquesInPage) => {
+            if (nextMarquesInPage.length <= 0) {
+                setHasMarquesToFetch(false);
+                return;
+            }
+            setMarquesInPage(nextMarquesInPage);
+        });
     }, []);
 
     useEffect(() => {
         if (page === 1) return;
-        const nextMarquesInPage = fetchMARQUES(page, LIMITE);
-        if (nextMarquesInPage.length <= 0) {
-            setHasMarquesToFetch(false);
-            return;
-        }
-        setMarquesInPage((prev) => {
-            return [
-                ...prev, 
-                ...nextMarquesInPage,
-            ];
+
+        fetchMARQUES(page, LIMITE).then((nextMarquesInPage) => {
+            if (nextMarquesInPage.length <= 0) {
+                setHasMarquesToFetch(false);
+                return;
+            }
+            setMarquesInPage((prev) => {
+                return [
+                    ...prev, 
+                    ...nextMarquesInPage,
+                ];
+            });
         });
     }, [page]);
+
 
     return (<>
     <section className="flex flex-col items-center justify-center ">

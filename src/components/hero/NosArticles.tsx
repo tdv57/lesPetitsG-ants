@@ -1,45 +1,56 @@
 import { useEffect, useState } from "react";
 import { COLORS } from "../../variables/couleur";
-import { NOMS_ARTICLES } from "../../service/ArticleService";
-import { type NOMS_ARTICLES_TYPE, ArticleFunctionMapping } from "../../service/ArticleService";
+import {getJeuDeSocietes, getJouets, getPeluches, NOMS_ARTICLES } from "../../service/ArticleService";
+import { type NOMS_ARTICLES_TYPE } from "../../service/ArticleService";
 import type { JouetType } from "../../variables/jouets";
 import type { PelucheType } from "../../variables/peluche";
 import type { JeuxDeSocieteType } from "../../variables/jeuxDeSociete";
 import { Article } from "../card/Article";
 import { Select } from "../card/Select";
-import { getAllMarqueName } from "../../service/MarqueService";
+import { useMarqueName } from "../../hook/useMarqueName";
+import type { JeuDeSocieteSelect, JouetSelect, PelucheSelect } from "../../types/ImageType";
 
 export function NosArticles() {
 
-    const [isActive, setIsActive] = useState<NOMS_ARTICLES_TYPE>("JOUETS");
-    const [articles, setArticles] = useState<{articleType: NOMS_ARTICLES_TYPE, items: (JouetType|PelucheType|JeuxDeSocieteType)[]}[]>([]);
+    const {marques} = useMarqueName();
+    const [isActive, setIsActive] = useState<NOMS_ARTICLES_TYPE>("JOUET");
+    const [articles, setArticles] = useState<{
+        "PELUCHE" : PelucheSelect[],
+        "JOUET" : JouetSelect[],
+        "JEU DE SOCIETE" : JeuDeSocieteSelect[]
+    }>({
+        "PELUCHE" : [],
+        "JOUET" : [],
+        "JEU DE SOCIETE" : []
+    });
+
     const [selected, setSelected] = useState<string>("Toutes");
     useEffect(() => {
-        setArticles((_) => {
-            let newArticles : any[] = [];
-            NOMS_ARTICLES.forEach((nomArticle) => {
-                newArticles.push({
-                    articleType: nomArticle, 
-                    items : ArticleFunctionMapping[nomArticle]()
-                })
-            })
-            return newArticles;
-        })
+        async function loadArticles() {
+            const [peluches, jouets, jeuDeSocietes] = await Promise.all([
+                getPeluches(),
+                getJouets(),
+                getJeuDeSocietes(),
+            ]);
+
+            setArticles({
+                "PELUCHE": peluches,
+                "JOUET": jouets,
+                "JEU DE SOCIETE": jeuDeSocietes,
+            });
+        }
+
+        loadArticles();
     }, []);
 
-    function getArticle() {
-        let currentArticle =  articles.find((article: {articleType: NOMS_ARTICLES_TYPE, items: (JouetType | PelucheType | JeuxDeSocieteType)[]}) => {
-            return article.articleType === isActive;
-        });
-        if (isActive === "PELUCHES") {
-            let pelucheArticles = (currentArticle?.items as PelucheType[] | undefined)?.filter((peluche) => {
+    function getArticles(typeArticle : "PELUCHE" | "JOUET" | "JEU DE SOCIETE") {
+        let currentArticle =  articles[typeArticle];
+        if (isActive === "PELUCHE") {
+            let pelucheArticles = (currentArticle as PelucheSelect[]).filter((peluche) => {
                 if (selected === "Toutes") return true;
                 return peluche.marque === selected;
             });
-            return {
-                article: currentArticle?.articleType,
-                items: pelucheArticles
-            }
+            return pelucheArticles;
         }
         return currentArticle;
     }
@@ -97,21 +108,21 @@ export function NosArticles() {
                 </div>
                 
             </div>
-            {isActive==="PELUCHES" && 
+            {isActive==="PELUCHE" && 
                 <div className="flex justify-center">
-                    <Select options={getAllMarqueName()} selected={selected} setSelected={setSelected}/> 
+                    <Select options={marques} selected={selected} setSelected={setSelected}/> 
                 </div>
             
             }
             <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-3 gap-8 place-items-center p-4">
             {
-                getArticle()?.items?.map((item, index) => {
+                getArticles(isActive).map((item, index) => {
                     return (
                         <Article 
                             key={index}
                             url={item.url} 
                             marque={"marque" in item ? item.marque : null}
-                            nom={"nom" in item ? item.nom : null}
+                            nom={"description" in item ? item.description : null}
                             age={"age" in item ? item.age : null}
                         />
                     );

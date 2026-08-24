@@ -1,13 +1,9 @@
+import type { MarqueSelect } from "../../types/ImageType";
 import { COLORS } from "../../variables/couleur";
 import {motion} from "motion/react";
-export type Marque = {
-  id: number;
-  nom: string;
-  img: string;
-};
 
 type Props = {
-    marque: Marque
+    marque: MarqueSelect
 };
 
 export default function MarqueCard({marque} : Props) {
@@ -20,12 +16,18 @@ export default function MarqueCard({marque} : Props) {
             transition={{ duration: 1 }}
             viewport={{ once: true }}
             style={{background: COLORS.backgroundCard}} 
-            className="px-8 w-30 sm:w-50 h-50 sm:h-75  rounded-4xl"
+            className="px-8 w-30 sm:w-50 h-50 sm:h-75 rounded-4xl overflow-hidden"
         >
             <div className="flex-col flex h-full w-full items-center">
-                <h3 style={{color: COLORS.primary, fontFamily: "Arial Rounded MT Bold"}} className="text-sm md:text-xl text-center font-extrabold py-2 md:py-4">{marque.nom}</h3>
-                <div className="flex-1 flex items-center justify-center w-20 sm:w-40">
-                    <img alt={`${marque.img}`} src={`${marque.img}`} className=" py-2 md:py-4 w-full "></img>
+                <h3 style={{color: COLORS.primary, fontFamily: "Arial Rounded MT Bold"}} className="text-sm md:text-xl text-center font-extrabold py-2 md:py-4">
+                    {marque.marque}
+                </h3>
+                <div className="flex-1 flex items-center justify-center w-20 sm:w-40 min-h-0 py-2 md:py-4">
+                    <img 
+                        alt={`${marque.marque}`} 
+                        src={`${marque.url}`} 
+                        className="max-w-full max-h-full w-auto h-auto object-contain"
+                    />
                 </div>
             </div>
         </motion.div>
