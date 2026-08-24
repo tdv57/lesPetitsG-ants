@@ -1,5 +1,5 @@
 import { createContext, useEffect, useState, type ReactNode } from "react";
-import { getAllMarqueName } from "../../service/MarqueService";
+import { getAllMarqueNameForPeluche } from "../../service/MarqueService";
 
 type MarqueNameContextType = {
     marques: {
@@ -22,7 +22,7 @@ export function MarqueNameProvider({children} : {children: ReactNode}) {
     }[]>([]);
 
     useEffect(() => {
-        getAllMarqueName().then((v) => {
+        getAllMarqueNameForPeluche().then((v) => {
             setMarques(v);
         })
     }, [])
