@@ -67,7 +67,7 @@ export default function Marques() {
             > 
             NOS MARQUES PHARES
             </h2>
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-5 sm:gap-5 md:gap-20 justify-center">
+            <div className="grid grid-cols-2 sm:grid-cols-3 pb-4 gap-5 sm:gap-5 md:gap-20 justify-center">
                 {marquesInPage.map((marque) => {return (<MarqueCard marque={marque} key={marque.id}/>);})}
                
             </div>
