@@ -13,18 +13,18 @@ export default function HoraireOuvertureCard() {
 
     return (
         <>
-            <h2 className="text-sm whitespace-nowrap sm:text-2xl font-bold mb-6" style={{ color: COLORS.primary }}>Nos Horaires d'ouverture :</h2>
-            <table style={{ backgroundColor: COLORS.backgroundCard }} className={`w-full text-sm md:text-lg max-w-md mx-auto text-center`}>
+            <h2 className="text-sm whitespace-nowrap sm:text-2xl lg:text-3xl font-bold mb-6" style={{ color: COLORS.primary, fontFamily: "Fredoka" }}>Nos Horaires d'ouverture :</h2>
+            <table style={{ backgroundColor: COLORS.backgroundCard, fontFamily: "Fredoka" }} className={`w-full text-sm md:text-lg lg:text-2xl max-w-md lg:max-w-2xl mx-auto text-center`}>
                 <tr style={{ color: COLORS.textDark }}>
-                    <th style={{ borderColor: COLORS.test }} className=" border-separate border-2 " >Jour</th>
-                    <th style={{ borderColor: COLORS.test }} className=" border-separate border-2 ">Matin</th>
-                    <th style={{ borderColor: COLORS.test }} className=" border-separate border-2 ">Après-midi</th>
+                    <th style={{ borderColor: COLORS.test }} className="border-separate border-2 px-2 py-1 lg:px-6 lg:py-3" >Jour</th>
+                    <th style={{ borderColor: COLORS.test }} className="border-separate border-2 px-2 py-1 lg:px-6 lg:py-3">Matin</th>
+                    <th style={{ borderColor: COLORS.test }} className="border-separate border-2 px-2 py-1 lg:px-6 lg:py-3">Après-midi</th>
                 </tr>
                 {horaires.map((horaire, index) => (
                     <tr className="" style={{ color: COLORS.textDark }} key={`${index}-${horaire.jour}`}>
-                        <td style={{ borderColor: COLORS.test }} className="border-separate border-2">{horaire.jour}</td>
-                        <td style={{ borderColor: COLORS.test }} className=" border-separate border-2 ">{horaire.horairesMatin}</td>
-                        <td style={{ borderColor: COLORS.test }} className=" border-separate border-2 ">{horaire.horairesAprem}</td>
+                        <td style={{ borderColor: COLORS.test }} className="border-separate border-2 px-2 py-1 lg:px-6 lg:py-3">{horaire.jour}</td>
+                        <td style={{ borderColor: COLORS.test }} className="border-separate border-2 px-2 py-1 lg:px-6 lg:py-3">{horaire.horairesMatin}</td>
+                        <td style={{ borderColor: COLORS.test }} className="border-separate border-2 px-2 py-1 lg:px-6 lg:py-3">{horaire.horairesAprem}</td>
                     </tr>
                 ))}
             </table>

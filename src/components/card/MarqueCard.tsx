@@ -16,13 +16,13 @@ export default function MarqueCard({marque} : Props) {
             transition={{ duration: 1 }}
             viewport={{ once: true }}
             style={{background: COLORS.backgroundCard}} 
-            className="px-8 w-30 sm:w-50 h-50 sm:h-75 rounded-4xl overflow-hidden"
+            className="px-8 w-30 sm:w-50 h-50 sm:h-75 lg:w-[clamp(13rem,18vw,22rem)] lg:h-[clamp(19rem,26vw,32rem)] rounded-4xl overflow-hidden"
         >
             <div className="flex-col flex h-full w-full items-center">
-                <h3 style={{color: COLORS.primary, fontFamily: "Arial Rounded MT Bold"}} className="text-sm md:text-xl text-center font-extrabold py-2 md:py-4">
+                <h3 style={{color: COLORS.primary, fontFamily: "Fredoka"}} className="text-sm md:text-xl lg:text-3xl text-center font-extrabold py-2 md:py-4">
                     {marque.marque}
                 </h3>
-                <div className="flex-1 flex items-center justify-center w-20 sm:w-40 min-h-0 py-2 md:py-4">
+                <div className="flex-1 flex items-center justify-center w-20 sm:w-40 lg:w-[85%] min-h-0 py-2 md:py-4">
                     <img 
                         alt={`${marque.marque}`} 
                         src={`${marque.url}`} 

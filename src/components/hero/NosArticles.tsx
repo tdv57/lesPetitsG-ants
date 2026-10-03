@@ -9,6 +9,7 @@ import { TypeArticleValue, type TypeArticleEnum } from "../../enum/TypeArticleEn
 import { useQuery } from "@tanstack/react-query";
 import { GenreEnumOption, GenreEnumValue } from "../../enum/GenreEnum";
 import { ThemeEnumOption, ThemeEnumValue } from "../../enum/ThemeEnum";
+import { getEditeur } from "../../service/EditeurService";
 
 export function NosArticles() {
 
@@ -17,10 +18,16 @@ export function NosArticles() {
     const [selectedMarque, setSelectedMarque] = useState<string>("Toutes");
     const [selectedGenre, setSelectedGenre] = useState<string>(GenreEnumValue.TOUS);
     const [selectedTheme, setSelectedTheme] = useState<string>(ThemeEnumValue.TOUS);
+    const [selectedEditeur, setSelectedEditeur] = useState<string>("Tous");
 
     const { data: articles = [], isLoading, isError } = useQuery({
         queryKey: ["articles", isActive],
         queryFn: () => getArticles(isActive)
+    });
+
+    const { data: editeurs = [] } = useQuery({
+        queryKey: ["editeurs"],
+        queryFn: () => getEditeur()
     });
 
     const filteredArticles = useMemo(() => {
@@ -37,9 +44,12 @@ export function NosArticles() {
             }
             return filteredArticles;
         }
+        if (isActive === TypeArticleValue.LIVRE && selectedEditeur !== "Tous") {
+            return articles.filter((a) => a.marque === selectedEditeur); 
+        }
         return articles;
     },
-        [articles, isActive, selectedMarque, selectedGenre, selectedTheme]
+        [articles, isActive, selectedMarque, selectedGenre, selectedTheme, selectedEditeur]
     );
 
     function getButtonStyle(nomArticle: NOMS_ARTICLES_TYPE) {
@@ -47,7 +57,7 @@ export function NosArticles() {
             return ({
                     background: COLORS.boutonInterieurClique,
                     border: `2px solid ${COLORS.boutonBordClique}`,  
-                    fontFamily: "Arial Rounded MT Bold", 
+                    fontFamily: "Fredoka", 
                     color: COLORS.textLight
                 });
             }
@@ -56,7 +66,7 @@ export function NosArticles() {
                 {
                     background: COLORS.boutonInterieurNonClique,
                     border: `2px solid ${COLORS.boutonBordNonClique}`,  
-                    fontFamily: "Arial Rounded MT Bold", 
+                    fontFamily: "Fredoka", 
                 }
             );
         }
@@ -69,20 +79,20 @@ export function NosArticles() {
     return (
         <>
             <h2
-                className="text-xl text-center sm:text-3xl lg:text-4xl font-bold pt-12"
-                style={{ background: COLORS.background ,color: COLORS.primary,  fontFamily: "Arial Rounded MT Bold" }}
+                className="text-xl text-center sm:text-3xl lg:text-4xl pt-12"
+                style={{ background: COLORS.background ,color: COLORS.primary,  fontFamily: "Fredoka" }}
             > 
                 NOS ARTICLES
             </h2>  
             <div className="flex justify-center ">
                 <div 
-                    className="w-180  grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-y-4 place-items-center p-4"
-                    style={{ background: COLORS.background ,color: COLORS.primary,  fontFamily: "Arial Rounded MT Bold" }}
+                    className="w-180 lg:w-full lg:max-w-[1550px] grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:gap-x-[clamp(1rem,4vw,4rem)] gap-y-4 place-items-center p-4"
+                    style={{ background: COLORS.background ,color: COLORS.primary,  fontFamily: "Fredoka" }}
                 >
                     { NOMS_ARTICLES.map((nomArticle, index) => {
                         return (
                             <button 
-                                className="w-60 h-10 md:w-40 md:h-20 text-xs rounded-xl flex items-center justify-center "
+                                className="w-60 h-10 md:w-40 md:h-20 lg:w-[clamp(14rem,16vw,20rem)] lg:h-[clamp(7rem,8vw,10rem)] text-xs lg:text-base rounded-xl flex items-center justify-center "
                                 key={index} 
                                 onClick={() => handleButton(nomArticle)}
                                 style={getButtonStyle(nomArticle)}
@@ -100,8 +110,13 @@ export function NosArticles() {
                     <Select options={marques} selected={selectedMarque} setSelected={setSelectedMarque}/> 
                 </div>
             }
+            {isActive===TypeArticleValue.LIVRE && 
+                <div className="flex justify-center">
+                    <Select options={[{ label: "Tous", value: "Tous" }, ...editeurs.map((editeur) => ({ label: editeur, value: editeur }))]} selected={selectedEditeur} setSelected={setSelectedEditeur} title="Éditeur"/> 
+                </div>
+            }
             {isActive===TypeArticleValue.DEGUISEMENT && 
-                <div className="flex justify-center gap-4">
+                <div className="flex flex-col sm:flex-row sm:justify-center sm:items-start items-center gap-4 lg:text-lg">
                     <Select options={GenreEnumOption} selected={selectedGenre} setSelected={setSelectedGenre} title="Genre"/> 
                     <Select options={ThemeEnumOption} selected={selectedTheme} setSelected={setSelectedTheme} title="Theme"/> 
                 </div>

@@ -31,17 +31,17 @@ export function Article({ url, marque, nom, age }: ArticlePropsType) {
                 transition={{ duration: 1 }}
                 viewport={{ once: true }}
                 style={{background: COLORS.backgroundCard}} 
-                className="px-8 w-50 sm:w-50 md:w-60 h-75 sm:h-70 md:h-80  rounded-4xl"
+                className="px-8 w-50 sm:w-50 md:w-60 h-75 sm:h-70 md:h-80 lg:w-[clamp(15rem,20vw,26rem)] lg:h-[clamp(20rem,28vw,34rem)] rounded-4xl"
             >
                 <div className="flex-col flex h-full w-full items-center">
                     { getNomAndAge() && 
                     (<div className="shrink-0">
-                        <h3 style={{color: COLORS.primary, fontFamily: "Arial Rounded MT Bold"}} className="text-xs md:text-sm text-center font-extrabold">{nom}</h3> 
-                        <h3 style={{color: COLORS.primary, fontFamily: "Arial Rounded MT Bold"}} className="text-xs md:text-xs text-center font-extrabold">{age}</h3>                     
+                        <h3 style={{color: COLORS.primary, fontFamily: "Fredoka"}} className="text-xs md:text-sm lg:text-2xl text-center">{nom}</h3> 
+                        <h3 style={{color: COLORS.primary, fontFamily: "Fredoka"}} className="text-xs md:text-xs lg:text-lg text-center">{age}</h3>                     
                     </div>)
  }
                     <div className="flex-1 flex items-center justify-center">
-                        <img alt={`${getDescription()}`} src={`${url}`} className="mx-auto block py-2 md:py-4 max-w-40"></img>
+                        <img alt={`${getDescription()}`} src={`${url}`} className="mx-auto block py-2 md:py-4 max-w-40 lg:max-w-[75%]"></img>
                     </div>
                 </div>
             </motion.div>

@@ -33,15 +33,15 @@ export function Select({options, selected, setSelected, title} : SelectPropType)
         <div ref={containerRef} className="relative w-60 md:w-40">
             {title && (
                 <p
-                    className="mb-1 text-xs text-center"
-                    style={{ fontFamily: "Arial Rounded MT Bold", color: COLORS.primary }}
+                    className="mb-1 text-xs lg:text-xl text-center"
+                    style={{ fontFamily: "Fredoka", color: COLORS.primary }}
                 >
                     {title}
                 </p>
             )}
         <button
             onClick={() => setIsOpen((prev) => !prev)}
-            className="w-full h-10 md:h-20 text-xs rounded-xl flex items-center justify-center"
+            className="w-full h-10 md:h-20 text-xs rounded-xl flex items-center justify-center lg:text-lg"
             style={{
             background: isOpen
                 ? COLORS.boutonInterieurClique
@@ -49,7 +49,7 @@ export function Select({options, selected, setSelected, title} : SelectPropType)
             border: `2px solid ${
                 isOpen ? COLORS.boutonBordClique : COLORS.boutonBordNonClique
             }`,
-            fontFamily: "Arial Rounded MT Bold",
+            fontFamily: "Fredoka",
             }}
         >
             {currentValue}
@@ -76,9 +76,9 @@ export function Select({options, selected, setSelected, title} : SelectPropType)
                     setIsOpen(false);
                     setCurrentValue(option.value)
                     }}
-                    className="px-3 py-2 text-xs cursor-pointer hover:bg-gray-100 flex items-center justify-center"
+                    className="px-3 py-2 text-xs cursor-pointer hover:bg-gray-100 flex items-center justify-center lg:text-lg text-center"
                     style={{
-                    fontFamily: "Arial Rounded MT Bold",
+                    fontFamily: "Fredoka",
                     fontWeight: option.label === selected ? "bold" : "normal",
                     }}
                 >

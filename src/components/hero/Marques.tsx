@@ -1,74 +1,49 @@
 import { COLORS } from "../../variables/couleur";
 import {fetchMARQUES} from "../../service/MarqueService";
 import MarqueCard from "../card/MarqueCard";
-import { useEffect, useRef, useState } from "react";
-import type { IMAGE_SELECT_TYPE, MarqueSelect } from "../../types/ImageType";
+import { useEffect, useRef } from "react";
+import { useInfiniteQuery } from "@tanstack/react-query";
 
 export default function Marques() {
     
     const LIMITE = 9;
-    const [page, setPage] = useState(1);
-    const [marquesInPage, setMarquesInPage] = useState<MarqueSelect[]>([]);
-    const [hasMarquesToFetch, setHasMarquesToFetch] = useState(true);
     const loaderRef = useRef<HTMLDivElement | null>(null);
     
+    const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteQuery({
+        queryKey: ["marques"],
+        queryFn: ({ pageParam }) => fetchMARQUES(pageParam, LIMITE),
+        initialPageParam: 1,
+        getNextPageParam: (lastPage, allPages) =>
+            lastPage.length < LIMITE ? undefined : allPages.length + 1,
+    });
+
+    const marques = data?.pages.flat() ?? [];
+
     useEffect(() => {
-        if (!hasMarquesToFetch) return;
-        const observer = new IntersectionObserver((entries) => {
-                if(!(entries[0].isIntersecting)) return;
-                setPage((prev) => prev + 1);
-                console.log(page);
-                console.log(marquesInPage);
-            }
-            , {
-                threshold: 1,
-            });
+        const el = loaderRef.current;
+        if (!el || !hasNextPage) return;
 
-        if (loaderRef.current) {
-            observer.observe(loaderRef.current);
-        }
-
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                if (entry.isIntersecting && !isFetchingNextPage) fetchNextPage();
+            },
+            { rootMargin: "200px" }
+        );
+        observer.observe(el);
         return () => observer.disconnect();
-    }, [hasMarquesToFetch]);
-
-     useEffect(() => {
-        fetchMARQUES(1, LIMITE).then((nextMarquesInPage) => {
-            if (nextMarquesInPage.length <= 0) {
-                setHasMarquesToFetch(false);
-                return;
-            }
-            setMarquesInPage(nextMarquesInPage);
-        });
-    }, []);
-
-    useEffect(() => {
-        if (page === 1) return;
-
-        fetchMARQUES(page, LIMITE).then((nextMarquesInPage) => {
-            if (nextMarquesInPage.length <= 0) {
-                setHasMarquesToFetch(false);
-                return;
-            }
-            setMarquesInPage((prev) => {
-                return [
-                    ...prev, 
-                    ...nextMarquesInPage,
-                ];
-            });
-        });
-    }, [page]);
+    }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
 
 
     return (<>
     <section className="flex flex-col items-center justify-center ">
             <h2
-                className="text-xl text-center sm:text-2xl md:text-3xl font-bold mb-6 p-12"
-                style={{ background: COLORS.background ,color: COLORS.primary,  fontFamily: "Arial Rounded MT Bold" }}
+                className="text-xl text-center sm:text-2xl md:text-3xl mb-6 p-12"
+                style={{ background: COLORS.background ,color: COLORS.primary,  fontFamily: "Fredoka" }}
             > 
             NOS MARQUES PHARES
             </h2>
             <div className="grid grid-cols-2 sm:grid-cols-3 pb-4 gap-5 sm:gap-5 md:gap-20 justify-center">
-                {marquesInPage.map((marque) => {return (<MarqueCard marque={marque} key={marque.id}/>);})}
+                {marques.map((marque) => {return (<MarqueCard marque={marque} key={marque.id}/>);})}
                
             </div>
             <div ref={loaderRef}></div>

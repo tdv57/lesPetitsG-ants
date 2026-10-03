@@ -2,7 +2,7 @@ import NavApp from './components/nav/NavApp'
 import FooterApp from './components/footer/FooterApp'
 import { COLORS } from './variables/couleur'
 import './App.css'
-import { useState } from 'react'
+import { useState, type CSSProperties } from 'react'
 import { Outlet } from 'react-router'
 import { ScrollToTop } from './components/card/ScrollToTop'
 
@@ -16,7 +16,7 @@ function App() {
     >
       <ScrollToTop />
       <NavApp setNavHeight={setNavHeight} />
-      <main className={`flex-grow `} style={{ paddingTop: navHeight }}>
+      <main className={`flex-grow `} style={{ paddingTop: navHeight, "--nav-h": `${navHeight}px` } as CSSProperties}>
         <Outlet/>
       </main>
       <FooterApp />

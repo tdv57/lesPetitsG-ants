@@ -1,13 +1,6 @@
-@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&family=Fredoka:wght@400;500;600;700&display=swap');
 @import "tailwindcss";
 
 @theme {
   --font-nav: 'Nunito', sans-serif;
-}
-
-@font-face {
-  font-family: "Arial Rounded MT Bold";
-  src: url("/assets/fonts/arial-rounded-mt-bold-bold_ufonts.ttf") format("truetype");
-  font-weight: normal;
-  font-style: normal;
 }

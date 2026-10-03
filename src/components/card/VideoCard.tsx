@@ -6,9 +6,10 @@ type VideoCardProp = {
     src: string;
     titre: string;
     age: string;
+    sizeClassName?: string;
 };
 
-export const VideoCard = forwardRef<HTMLDivElement, VideoCardProp>(({src, titre, age}, ref) => {
+export const VideoCard = forwardRef<HTMLDivElement, VideoCardProp>(({src, titre, age, sizeClassName = "w-80 sm:w-100 md:w-100 h-60 sm:h-72 md:h-80"}, ref) => {
 
   const [size, setSize] = useState({width: 0, height: 0});
 
@@ -41,13 +42,13 @@ export const VideoCard = forwardRef<HTMLDivElement, VideoCardProp>(({src, titre,
   <>
     <div className="p-4  w-full flex justify-center">
       <div className="  flex flex-col items-center rounded-lg" style={{background: COLORS.backgroundCard}} >
-         <h2 style={{color: COLORS.primary, fontFamily: "Arial Rounded MT Bold"}} className="text-lg sm:text-xl py-4 px-4 md:py-8 md:px-8 lg:px-12 lg:py-12 text-center font-extrabold">
-          {titre && <h3>{titre}</h3>}
-          {age && <h3>{age}</h3>}
+         <h2 style={{color: COLORS.primary, fontFamily: "Fredoka"}} className="py-4 px-4 md:py-8 md:px-8 lg:px-12 lg:py-12 text-center">
+          {titre && <h3 className="text-lg sm:text-xl md:text-2xl lg:text-3xl ">{titre}</h3>}
+          {age && <h3 className="text-lg sm:text-lg md:text-xl lg:text-2xl ">{age}</h3>}
           </h2>         
-          <div ref={ref} className="p-4 sm:p-0 sm:pb-8 w-80 sm:w-100 md:w-100">
-              <div className="relative flex flex-col items-center justify-center overflow-hidden h-60 sm:h-72 md:h-80">
-                  <video 
+          <div ref={ref} className="p-4 sm:px-8 sm:py-0 sm:pb-8 lg:px-12 w-full flex justify-center">
+              <div className={`relative flex flex-col items-center justify-center overflow-hidden ${sizeClassName}`}>
+                  <video
                       controls 
                       muted 
                       loop 
@@ -57,7 +58,7 @@ export const VideoCard = forwardRef<HTMLDivElement, VideoCardProp>(({src, titre,
                       className="rounded-lg max-w-full max-h-full w-auto h-auto object-contain"
                   >
                       <source src={src} />
-                      Ton navigateur ne supporte pas la vidéo.
+                      Vptre navigateur ne supporte pas la vidéo.
                   </video>
               </div>
           </div>

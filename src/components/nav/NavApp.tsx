@@ -73,13 +73,13 @@ export default function NavApp({setNavHeight} : NavAppProps) {
                     <img
                         src="/assets/logo2.png"
                         alt="Logo du magasin Les Petits Géants d'Arras"
-                        className=" h-30 w-30 sm:h-40 sm:w-40 md:h-35 md:w-35 md:ml-5 object-contain"
+                        className=" h-30 w-30 sm:h-40 sm:w-40 md:h-35 md:w-35 lg:w-45 lg:h-45 md:ml-5 object-contain"
                     /></Link>
                 </div>
 
 
                 {/* Conteneur Droite : Liens (Desktop uniquement) */}
-                <div style={{ color: COLORS.test }} className="flex-1 min-w-0 hidden sm:text-shadow-md md:text-md lg:text-lg md:flex justify-end md:mr-4 gap-4 md:gap-4 lg:gap-6">
+                <div style={{ color: COLORS.test }} className="flex-1 min-w-0 hidden sm:text-shadow-md md:text-md lg:text-xl md:flex justify-end md:mr-4 gap-4 md:gap-4 lg:gap-6">
                     {MENU_NOM.map((menuNom) => <Link to={menuNom.url} className="text-center hover:opacity-80 transition-opacity font-semibold tracking-wide font-nav">{menuNom.nom}</Link>)}
                 </div>
 

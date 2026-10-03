@@ -9,24 +9,48 @@ export default function LesVideosDuMoment() {
     return (<>
         <section className="flex flex-col items-center justify-center ">
             <h2
-                className="text-xl text-center sm:text-3xl lg:text-4xl font-bold pt-12 mb-6"
-                style={{ background: COLORS.background ,color: COLORS.primary,  fontFamily: "Arial Rounded MT Bold" }}
+                className="text-xl text-center sm:text-3xl lg:text-4xl pt-12 mb-6"
+                style={{ background: COLORS.background ,color: COLORS.primary,  fontFamily: "Fredoka" }}
             > 
                 LES VIDEOS DU MOMENT
             </h2>   
             {
-                videosDuMoment.map((video, index) => 
+                videosDuMoment.map((video, index) =>
                 {
+                    const isLast = index === videosDuMoment.length - 1;
                     return (
-                        <div className="w-80 sm:w-120 md:w-140">
-                            <VideoCard key={index} src={video.src} titre={video.titre} age={video.age} />
+                        <>
+                        <a
+                            href={`#video-${index}`}
+                            aria-label="Aller à la vidéo suivante"
+                            className="my-4 px-4 py-2 rounded-full font-bold"
+                            style={{ background: COLORS.primary, color: COLORS.background }}
+                        >
+                            ↓ Vidéo suivante
+                        </a>
+                        <div
+                            key={index}
+                            id={`video-${index}`}
+                            className="flex flex-col items-center scroll-mt-[var(--nav-h)]"
+                        >
+
+
+
+                        <VideoCard
+                            key={index}
+                            src={video.src}
+                            titre={video.titre}
+                            age={video.age}
+                            sizeClassName="w-[85vw] max-w-[1100px] h-[48vh] sm:h-[52vh] lg:h-[58vh]"
+                        />
                         </div>
+                        </>
                     );
                 }
-                    
+
                 )
             }
-            
+
         </section>
     </>);
 }
