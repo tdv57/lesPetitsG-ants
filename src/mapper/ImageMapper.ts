@@ -1,24 +1,21 @@
-import type { IMAGE_SELECT_TYPE, ImageSelect, JeuDeSocieteSelect, JouetSelect, MarqueSelect, PelucheSelect, RawMarque } from "../types/ImageType";
+import type { DeguisementSelect, ImageSelect, JeuDeSocieteSelect, JouetSelect, LivreSelect, LoisirCreatifSelect, MarqueSelect, PelucheSelect, SupabaseImage } from "../types/ImageType";
 import { mapAge } from "./UtilsMapper";
 
-export function isMarqueSelect(s: IMAGE_SELECT_TYPE): s is MarqueSelect {
-  console.log("function: ", s);
-  return s.typeImage === "MARQUE";
+export function mapImageSelectFromSupabase(s: SupabaseImage): ImageSelect {
+    return {
+        url: s.url,
+        id: s.id,
+        typeImage: s.type_image,
+        marque: s.marque,
+        age: s.age && s.type_age ? mapAge(s.age, s.type_age as 'ANS' | 'MOIS') : undefined,
+        description: s.description ? s.description : undefined,
+        createdAt: new Date(s.created_at),
+        theme: s.theme ? s.theme : undefined,
+        genre: s.genre ? s.genre : undefined
+    };
 }
 
-export function isJouetSelect(s: IMAGE_SELECT_TYPE): s is JouetSelect {
-  return s.typeImage === "JOUET";
-}
-
-export function isJeuDeSocieteSelect(s: IMAGE_SELECT_TYPE): s is JeuDeSocieteSelect {
-  return s.typeImage === "JEU DE SOCIETE";
-}
-
-export function isPelucheSelect(s: IMAGE_SELECT_TYPE): s is PelucheSelect {
-  return s.typeImage === "PELUCHE";
-}
-
-export function mapMarqueFromSupabase(s: RawMarque): MarqueSelect {
+export function mapMarqueFromSupabase(s: SupabaseImage): MarqueSelect {
   return {
         id: s.id,
         url: s.url,
@@ -28,7 +25,7 @@ export function mapMarqueFromSupabase(s: RawMarque): MarqueSelect {
     }
 }
 
-export function mapPelucheFromSupabase(s: RawMarque): PelucheSelect {
+export function mapPelucheFromSupabase(s: SupabaseImage): PelucheSelect {
   return {
         id: s.id,
         url: s.url,
@@ -38,7 +35,7 @@ export function mapPelucheFromSupabase(s: RawMarque): PelucheSelect {
     }
 }
 
-export function mapJouetFromSupabase(s: RawMarque): JouetSelect {
+export function mapJouetFromSupabase(s: SupabaseImage): JouetSelect {
   return {
         id: s.id,
         url: s.url,
@@ -49,7 +46,7 @@ export function mapJouetFromSupabase(s: RawMarque): JouetSelect {
     }
 }
 
-export function mapJeuDeSocieteFromSupabase(s: RawMarque): JeuDeSocieteSelect {
+export function mapJeuDeSocieteFromSupabase(s: SupabaseImage): JeuDeSocieteSelect {
   return {
         id: s.id,
         url: s.url,
@@ -93,7 +90,7 @@ export function mapToJeuDeSocieteSelect(image: ImageSelect) : JeuDeSocieteSelect
     }
 }
 
-export function mapToMarqueSelect(image: ImageSelect) : MarqueSelect{
+export function mapToMarqueSelect(image: ImageSelect) : MarqueSelect {
     return {
         url: image.url,
         id: image.id, 
@@ -101,4 +98,40 @@ export function mapToMarqueSelect(image: ImageSelect) : MarqueSelect{
         marque: image.marque ? image.marque : "",
         createdAt: image.createdAt
     }
+}
+
+export function mapToDeguisementSelect(image: ImageSelect): DeguisementSelect {
+    return {
+        url: image.url,
+        id: image.id, 
+        typeImage: image.typeImage,
+        age: image.age ? image.age : "",
+        description: image.description ? image.description : "",
+        createdAt: image.createdAt,
+        genre: image.genre ? image.genre : "",
+        theme: image.theme ? image.theme : ""
+    };
+}
+
+export function mapToLivreSelect(image: ImageSelect): LivreSelect {
+    return {
+        url: image.url,
+        id: image.id, 
+        typeImage: image.typeImage,
+        age: image.age ? image.age : "",
+        description: image.description ? image.description : "",
+        marque: image.marque ? image.marque : "",
+        createdAt: image.createdAt,
+    };
+}
+
+export function mapToLoisirCreatifSelect(image: ImageSelect): LoisirCreatifSelect{
+    return {
+        url: image.url,
+        id: image.id, 
+        typeImage: image.typeImage,
+        age: image.age ? image.age : "",
+        description: image.description ? image.description : "",
+        createdAt: image.createdAt,
+    };
 }

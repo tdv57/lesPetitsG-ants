@@ -1,59 +1,46 @@
-import { useEffect, useState } from "react";
+import { useMemo, useState } from "react";
 import { COLORS } from "../../variables/couleur";
-import {getJeuDeSocietes, getJouets, getPeluches, NOMS_ARTICLES } from "../../service/ArticleService";
+import {getArticles, NOMS_ARTICLES } from "../../service/ArticleService";
 import { type NOMS_ARTICLES_TYPE } from "../../service/ArticleService";
-import type { JouetType } from "../../variables/jouets";
-import type { PelucheType } from "../../variables/peluche";
-import type { JeuxDeSocieteType } from "../../variables/jeuxDeSociete";
 import { Article } from "../card/Article";
 import { Select } from "../card/Select";
 import { useMarqueName } from "../../hook/useMarqueName";
-import type { JeuDeSocieteSelect, JouetSelect, PelucheSelect } from "../../types/ImageType";
+import { TypeArticleValue, type TypeArticleEnum } from "../../enum/TypeArticleEnum";
+import { useQuery } from "@tanstack/react-query";
+import { GenreEnumOption, GenreEnumValue } from "../../enum/GenreEnum";
+import { ThemeEnumOption, ThemeEnumValue } from "../../enum/ThemeEnum";
 
 export function NosArticles() {
 
     const {marques} = useMarqueName();
-    const [isActive, setIsActive] = useState<NOMS_ARTICLES_TYPE>("JOUET");
-    const [articles, setArticles] = useState<{
-        "PELUCHE" : PelucheSelect[],
-        "JOUET" : JouetSelect[],
-        "JEU DE SOCIETE" : JeuDeSocieteSelect[]
-    }>({
-        "PELUCHE" : [],
-        "JOUET" : [],
-        "JEU DE SOCIETE" : []
+    const [isActive, setIsActive] = useState<TypeArticleEnum>(TypeArticleValue.JOUET);
+    const [selectedMarque, setSelectedMarque] = useState<string>("Toutes");
+    const [selectedGenre, setSelectedGenre] = useState<string>(GenreEnumValue.TOUS);
+    const [selectedTheme, setSelectedTheme] = useState<string>(ThemeEnumValue.TOUS);
+
+    const { data: articles = [], isLoading, isError } = useQuery({
+        queryKey: ["articles", isActive],
+        queryFn: () => getArticles(isActive)
     });
 
-    const [selected, setSelected] = useState<string>("Toutes");
-    useEffect(() => {
-        async function loadArticles() {
-            const [peluches, jouets, jeuDeSocietes] = await Promise.all([
-                getPeluches(),
-                getJouets(),
-                getJeuDeSocietes(),
-            ]);
-
-            setArticles({
-                "PELUCHE": peluches,
-                "JOUET": jouets,
-                "JEU DE SOCIETE": jeuDeSocietes,
-            });
+    const filteredArticles = useMemo(() => {
+        if (isActive === TypeArticleValue.PELUCHE && selectedMarque !== "Toutes") {
+            return articles.filter((a) => a.marque === selectedMarque);
         }
-
-        loadArticles();
-    }, []);
-
-    function getArticles(typeArticle : "PELUCHE" | "JOUET" | "JEU DE SOCIETE") {
-        let currentArticle =  articles[typeArticle];
-        if (isActive === "PELUCHE") {
-            let pelucheArticles = (currentArticle as PelucheSelect[]).filter((peluche) => {
-                if (selected === "Toutes") return true;
-                return peluche.marque === selected;
-            });
-            return pelucheArticles;
+        if (isActive === TypeArticleValue.DEGUISEMENT) {
+            let filteredArticles = articles;
+            if (selectedGenre !== GenreEnumValue.TOUS) {
+                filteredArticles = filteredArticles.filter((a) => a.genre === selectedGenre);
+            }
+            if (selectedTheme !== ThemeEnumValue.TOUS) {
+                filteredArticles = filteredArticles.filter((a) => a.theme === selectedTheme);
+            }
+            return filteredArticles;
         }
-        return currentArticle;
-    }
+        return articles;
+    },
+        [articles, isActive, selectedMarque, selectedGenre, selectedTheme]
+    );
 
     function getButtonStyle(nomArticle: NOMS_ARTICLES_TYPE) {
         if (nomArticle === isActive) {
@@ -108,15 +95,20 @@ export function NosArticles() {
                 </div>
                 
             </div>
-            {isActive==="PELUCHE" && 
+            {isActive===TypeArticleValue.PELUCHE && 
                 <div className="flex justify-center">
-                    <Select options={marques} selected={selected} setSelected={setSelected}/> 
+                    <Select options={marques} selected={selectedMarque} setSelected={setSelectedMarque}/> 
                 </div>
-            
+            }
+            {isActive===TypeArticleValue.DEGUISEMENT && 
+                <div className="flex justify-center gap-4">
+                    <Select options={GenreEnumOption} selected={selectedGenre} setSelected={setSelectedGenre} title="Genre"/> 
+                    <Select options={ThemeEnumOption} selected={selectedTheme} setSelected={setSelectedTheme} title="Theme"/> 
+                </div>
             }
             <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-3 gap-8 place-items-center p-4">
             {
-                getArticles(isActive).map((item, index) => {
+                filteredArticles.map((item, index) => {
                     return (
                         <Article 
                             key={index}

@@ -9,9 +9,10 @@ type SelectPropType = {
     }[];
     selected: string,
     setSelected: React.Dispatch<React.SetStateAction<string>>
+    title?: string
 }
 
-export function Select({options, selected, setSelected} : SelectPropType) {
+export function Select({options, selected, setSelected, title} : SelectPropType) {
     
     const [isOpen, setIsOpen] = useState(false);
     const [currentValue, setCurrentValue] = useState(options.find((option) => option.label===selected)?.value);
@@ -30,6 +31,14 @@ export function Select({options, selected, setSelected} : SelectPropType) {
     
     return (
         <div ref={containerRef} className="relative w-60 md:w-40">
+            {title && (
+                <p
+                    className="mb-1 text-xs text-center"
+                    style={{ fontFamily: "Arial Rounded MT Bold", color: COLORS.primary }}
+                >
+                    {title}
+                </p>
+            )}
         <button
             onClick={() => setIsOpen((prev) => !prev)}
             className="w-full h-10 md:h-20 text-xs rounded-xl flex items-center justify-center"
