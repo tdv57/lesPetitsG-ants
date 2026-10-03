@@ -1,5 +1,4 @@
 import { forwardRef, useEffect, useRef, useState } from "react";
-import {VideoPlayerCard} from "./VideoPlayerCard";
 import { COLORS } from "../../variables/couleur";
 
 type VideoCardProp = {
@@ -11,7 +10,7 @@ type VideoCardProp = {
 
 export const VideoCard = forwardRef<HTMLDivElement, VideoCardProp>(({src, titre, age, sizeClassName = "w-80 sm:w-100 md:w-100 h-60 sm:h-72 md:h-80"}, ref) => {
 
-  const [size, setSize] = useState({width: 0, height: 0});
+  const [_size, setSize] = useState({width: 0, height: 0});
 
   const videoRef = useRef<HTMLVideoElement | null>(null);
 
@@ -56,6 +55,7 @@ export const VideoCard = forwardRef<HTMLDivElement, VideoCardProp>(({src, titre,
                       disableRemotePlayback 
                       ref={videoRef} 
                       className="rounded-lg max-w-full max-h-full w-auto h-auto object-contain"
+                      autoPlay
                   >
                       <source src={src} />
                       Vptre navigateur ne supporte pas la vidéo.

@@ -3,9 +3,9 @@ import { COLORS } from "../../variables/couleur";
 
 export function NousContacterCard() {
     const CONTACT = {
-        telAffiche: "01 23 45 67 89",
-        telLien: "+33123456789",
-        mail: "contact@exemple.fr",
+        telAffiche: "06 02 11 71 47",
+        telLien: "+33602117147",
+        mail: "lespetitsgeantsarras@gmail.com",
     };
     return (
         <>

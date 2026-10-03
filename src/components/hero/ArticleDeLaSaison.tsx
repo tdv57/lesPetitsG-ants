@@ -9,9 +9,9 @@ export default function ArticleDeLaSaison() {
     const videoRef = useRef<HTMLDivElement>(null);
 
     return (<>
-        <section className="flex flex-col items-center justify-center min-h-[calc(100vh-var(--nav-h,0px))] px-4">
+       <section className="flex flex-col items-center justify-center ">
             <h2
-                className="text-xl text-center sm:text-3xl lg:text-4xl  pt-4 mb-4"
+                className="text-xl text-center sm:text-3xl lg:text-4xl pt-12 mb-6"
                 style={{ background: COLORS.background ,color: COLORS.primary,  fontFamily: "Fredoka" }}
             >
                 L'ARTICLE DE LA SAISON

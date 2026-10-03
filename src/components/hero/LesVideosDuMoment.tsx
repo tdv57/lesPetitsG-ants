@@ -17,7 +17,6 @@ export default function LesVideosDuMoment() {
             {
                 videosDuMoment.map((video, index) =>
                 {
-                    const isLast = index === videosDuMoment.length - 1;
                     return (
                         <>
                         <a

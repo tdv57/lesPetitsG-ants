@@ -20,7 +20,7 @@ export function NosArticles() {
     const [selectedTheme, setSelectedTheme] = useState<string>(ThemeEnumValue.TOUS);
     const [selectedEditeur, setSelectedEditeur] = useState<string>("Tous");
 
-    const { data: articles = [], isLoading, isError } = useQuery({
+    const { data: articles = []} = useQuery({
         queryKey: ["articles", isActive],
         queryFn: () => getArticles(isActive)
     });
