@@ -32,62 +32,6 @@ export type MarqueSelect = {
         createdAt: Date
 }
 
-export type JouetSelect = {
-    url: string,
-    id: number,
-    typeImage : TYPE_IMAGE_TYPE,
-    age?: string,
-    description: string,
-    createdAt: Date
-}
-
-export type JeuDeSocieteSelect = {
-    url: string,
-    id: number,
-    typeImage : TYPE_IMAGE_TYPE,
-    age?: string,
-    description: string,
-    createdAt: Date    
-}
-
-export type PelucheSelect = {
-    url: string,
-    id: number,
-    typeImage : TYPE_IMAGE_TYPE,
-    marque:string, 
-    createdAt: Date    
-}
-
-export type LoisirCreatifSelect =  {
-    url: string,
-    id: number,
-    typeImage : TYPE_IMAGE_TYPE,
-    age?: string,
-    description: string,
-    createdAt: Date
-}
-
-export type LivreSelect = {
-    url: string,
-    id: number,
-    typeImage : TYPE_IMAGE_TYPE,
-    age?: string,
-    description: string,
-    marque: string,
-    createdAt: Date
-}
-
-export type DeguisementSelect = {
-    url: string,
-    id: number,
-    typeImage: TYPE_IMAGE_TYPE,
-    age?: string,
-    description: string,
-    createdAt: Date,
-    genre: string,
-    theme: string
-}
-
 export type SupabaseImage = {
     id: number;
     created_at: string;
@@ -114,5 +58,3 @@ export type ImageSelect = {
     theme?: string;
     genre?: string;
 };
-
-export type IMAGE_SELECT_TYPE =  MarqueSelect | JeuDeSocieteSelect | JouetSelect | PelucheSelect;

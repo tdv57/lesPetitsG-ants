@@ -1,6 +1,5 @@
 import type { TypeAgeEnum } from "../enum/TypeAgeEnum";
-import type { DeguisementSelect, ImageSelect, JeuDeSocieteSelect, JouetSelect, LivreSelect, LoisirCreatifSelect, MarqueSelect, PelucheSelect, SupabaseImage } from "../types/ImageType";
-import { mapAge } from "./UtilsMapper";
+import type { ImageSelect, SupabaseImage } from "../types/ImageType";
 
 export function mapImageSelectFromSupabase(s: SupabaseImage): ImageSelect {
     return {
