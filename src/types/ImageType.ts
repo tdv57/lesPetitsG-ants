@@ -1,3 +1,4 @@
+import type { TypeAgeEnum } from "../enum/TypeAgeEnum";
 
 export const TYPE_IMAGE_VALUE = {
     MARQUE: 'MARQUE',
@@ -106,7 +107,8 @@ export type ImageSelect = {
     id: number;
     typeImage: TYPE_IMAGE_TYPE;
     marque?: string;
-    age?: string;
+    age?: number;
+    typeAge?: TypeAgeEnum;
     description?: string;
     createdAt: Date;
     theme?: string;

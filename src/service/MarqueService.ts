@@ -1,5 +1,5 @@
-import { mapMarqueFromSupabase, mapToMarqueSelect } from "../mapper/ImageMapper";
-import type {MarqueSelect } from "../types/ImageType";
+import { mapImageSelectFromSupabase } from "../mapper/ImageMapper";
+import type {ImageSelect } from "../types/ImageType";
 import { getImageByType } from "./ImageService";
 import { supabase, TABLE_IMAGE } from "./VideoService";
 
@@ -11,7 +11,7 @@ export const fetchMARQUES = async (page: number, limite: number) => {
         console.log("getImageError : ", error);
         return [];
     } else {
-        return data.map(d => mapToMarqueSelect(mapMarqueFromSupabase(d))) as MarqueSelect[];
+        return data.map(d => mapImageSelectFromSupabase(d)) as ImageSelect[];
     }
 }
 

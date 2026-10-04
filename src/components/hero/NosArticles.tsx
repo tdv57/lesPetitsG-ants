@@ -10,6 +10,7 @@ import { useQuery } from "@tanstack/react-query";
 import { GenreEnumOption, GenreEnumValue } from "../../enum/GenreEnum";
 import { ThemeEnumOption, ThemeEnumValue } from "../../enum/ThemeEnum";
 import { getEditeur } from "../../service/EditeurService";
+import { AgeEnumOption, AgeEnumValue, IsInAge, type AgeEnum } from "../../enum/AgeEnum";
 
 export function NosArticles() {
 
@@ -19,6 +20,7 @@ export function NosArticles() {
     const [selectedGenre, setSelectedGenre] = useState<string>(GenreEnumValue.TOUS);
     const [selectedTheme, setSelectedTheme] = useState<string>(ThemeEnumValue.TOUS);
     const [selectedEditeur, setSelectedEditeur] = useState<string>("Tous");
+    const [selectedAge, setSelectedAge] = useState<string>(AgeEnumValue.TOUS);
 
     const { data: articles = []} = useQuery({
         queryKey: ["articles", isActive],
@@ -31,11 +33,15 @@ export function NosArticles() {
     });
 
     const filteredArticles = useMemo(() => {
+        let filteredArticles = articles;
+        if (selectedAge !== AgeEnumValue.TOUS) {
+            filteredArticles = filteredArticles.filter((a) => IsInAge(a.age, a.typeAge, selectedAge as AgeEnum));
+        }
         if (isActive === TypeArticleValue.PELUCHE && selectedMarque !== "Toutes") {
-            return articles.filter((a) => a.marque === selectedMarque);
+            return filteredArticles.filter((a) => a.marque === selectedMarque);
         }
         if (isActive === TypeArticleValue.DEGUISEMENT) {
-            let filteredArticles = articles;
+            
             if (selectedGenre !== GenreEnumValue.TOUS) {
                 filteredArticles = filteredArticles.filter((a) => a.genre === selectedGenre);
             }
@@ -45,11 +51,11 @@ export function NosArticles() {
             return filteredArticles;
         }
         if (isActive === TypeArticleValue.LIVRE && selectedEditeur !== "Tous") {
-            return articles.filter((a) => a.marque === selectedEditeur); 
+            return filteredArticles.filter((a) => a.marque === selectedEditeur); 
         }
-        return articles;
+        return filteredArticles;
     },
-        [articles, isActive, selectedMarque, selectedGenre, selectedTheme, selectedEditeur]
+        [articles, isActive, selectedMarque, selectedGenre, selectedTheme, selectedEditeur, selectedAge]
     );
 
     function getButtonStyle(nomArticle: NOMS_ARTICLES_TYPE) {
@@ -79,14 +85,14 @@ export function NosArticles() {
     return (
         <>
             <h2
-                className="text-xl text-center sm:text-3xl lg:text-4xl pt-12"
+                className="text-xl text-center sm:text-3xl lg:text-4xl pt-12 lg:pt-[clamp(1rem,4vh,3rem)]"
                 style={{ background: COLORS.background ,color: COLORS.primary,  fontFamily: "Fredoka" }}
             > 
                 NOS ARTICLES
             </h2>  
             <div className="flex justify-center ">
                 <div 
-                    className="w-180 lg:w-full lg:max-w-[1550px] grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:gap-x-[clamp(1rem,4vw,4rem)] gap-y-4 place-items-center p-4"
+                    className="w-180 lg:w-full lg:max-w-[1550px] grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 lg:gap-x-[clamp(1rem,4vw,4rem)] gap-y-4 place-items-center p-4"
                     style={{ background: COLORS.background ,color: COLORS.primary,  fontFamily: "Fredoka" }}
                 >
                     { NOMS_ARTICLES.map((nomArticle, index) => {
@@ -105,22 +111,24 @@ export function NosArticles() {
                 </div>
                 
             </div>
+            <div className="flex flex-col sm:flex-row sm:justify-center sm:items-start items-center gap-4 lg:text-lg">
+            {isActive !== TypeArticleValue.PELUCHE && 
+                <Select options={AgeEnumOption} selected={selectedAge} setSelected={setSelectedAge} title="Tranche d'âge"/>
+            }
             {isActive===TypeArticleValue.PELUCHE && 
-                <div className="flex justify-center">
-                    <Select options={marques} selected={selectedMarque} setSelected={setSelectedMarque}/> 
-                </div>
+                <Select options={marques} selected={selectedMarque} setSelected={setSelectedMarque} title="Marque"/> 
             }
             {isActive===TypeArticleValue.LIVRE && 
-                <div className="flex justify-center">
-                    <Select options={[{ label: "Tous", value: "Tous" }, ...editeurs.map((editeur) => ({ label: editeur, value: editeur }))]} selected={selectedEditeur} setSelected={setSelectedEditeur} title="Éditeur"/> 
-                </div>
+                <Select options={[{ label: "Tous", value: "Tous" }, ...editeurs.map((editeur) => ({ label: editeur, value: editeur }))]} selected={selectedEditeur} setSelected={setSelectedEditeur} title="Éditeur"/> 
             }
             {isActive===TypeArticleValue.DEGUISEMENT && 
-                <div className="flex flex-col sm:flex-row sm:justify-center sm:items-start items-center gap-4 lg:text-lg">
-                    <Select options={GenreEnumOption} selected={selectedGenre} setSelected={setSelectedGenre} title="Genre"/> 
-                    <Select options={ThemeEnumOption} selected={selectedTheme} setSelected={setSelectedTheme} title="Theme"/> 
-                </div>
+                <>
+                <Select options={GenreEnumOption} selected={selectedGenre} setSelected={setSelectedGenre} title="Genre"/> 
+                <Select options={ThemeEnumOption} selected={selectedTheme} setSelected={setSelectedTheme} title="Theme"/> 
+                </>
+
             }
+            </div>
             <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-3 gap-8 place-items-center p-4">
             {
                 filteredArticles.map((item, index) => {
@@ -130,7 +138,8 @@ export function NosArticles() {
                             url={item.url} 
                             marque={"marque" in item ? item.marque : null}
                             nom={"description" in item ? item.description : null}
-                            age={"age" in item ? item.age : null}
+                            age={item.age}
+                            typeAge={item.typeAge}
                         />
                     );
                 })

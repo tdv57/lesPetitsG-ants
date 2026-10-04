@@ -1,6 +1,7 @@
+import type { TypeAgeEnum } from "../enum/TypeAgeEnum";
 
 
-export function mapAge(age: number | null , typeAge: "ANS" | "MOIS" | null) : string {
+export function mapAge(age: number | undefined , typeAge: TypeAgeEnum | undefined) : string {
     if( !age || age < 0 || !typeAge || (typeAge !== "ANS" && typeAge !== "MOIS")) {
         return "";
     }
@@ -16,10 +17,3 @@ export function mapAge(age: number | null , typeAge: "ANS" | "MOIS" | null) : st
     }
     return ""; 
 }
-
-export const typeAgeCollection = ({
-        items: [
-            {label: "Ans", value: "ANS"},
-            {label: "Mois", value: "MOIS"},
-        ]
-    });

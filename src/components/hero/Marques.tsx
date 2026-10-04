@@ -37,7 +37,7 @@ export default function Marques() {
     return (<>
     <section className="flex flex-col items-center justify-center ">
             <h2
-                className="text-xl text-center sm:text-3xl lg:text-4xl pt-12 mb-6"
+                className="text-xl text-center sm:text-3xl lg:text-4xl pt-12 lg:pt-[clamp(1rem,4vh,3rem)] mb-6"
                 style={{ background: COLORS.background ,color: COLORS.primary,  fontFamily: "Fredoka" }}
             > 
             NOS MARQUES PHARES

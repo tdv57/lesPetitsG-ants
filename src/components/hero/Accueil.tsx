@@ -5,7 +5,7 @@ import { NosReseauxCard } from "../card/NosReseauxCard";
 
 export default function Accueil() {
     return (
-        <section className="max-w-4xl mx-auto py-20 px-6 text-center">
+        <section className="max-w-4xl mx-auto py-20 lg:pt-[clamp(2rem,8vh,5rem)] px-6 text-center">
             <h2
                 className="text-xl sm:text-4xl md:text-5xl  mb-6"
                 style={{ color: COLORS.primary, fontFamily: "Fredoka" }}

@@ -40,7 +40,7 @@ export const VideoCard = forwardRef<HTMLDivElement, VideoCardProp>(({src, titre,
   return (
   <>
     <div className="p-4  w-full flex justify-center">
-      <div className="  flex flex-col items-center rounded-lg" style={{background: COLORS.backgroundCard}} >
+      <div data-video-card className="  flex flex-col items-center rounded-lg" style={{background: COLORS.backgroundCard}} >
          <h2 style={{color: COLORS.primary, fontFamily: "Fredoka"}} className="py-4 px-4 md:py-8 md:px-8 lg:px-12 lg:py-12 text-center">
           {titre && <h3 className="text-lg sm:text-xl md:text-2xl lg:text-3xl ">{titre}</h3>}
           {age && <h3 className="text-lg sm:text-lg md:text-xl lg:text-2xl ">{age}</h3>}

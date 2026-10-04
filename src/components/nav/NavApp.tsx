@@ -46,10 +46,14 @@ export default function NavApp({setNavHeight} : NavAppProps) {
     }, []);
 
 
+    // La hauteur de la nav dépend de la fenêtre en lg (15vh) : on la suit au redimensionnement
     useEffect (() => {
-    if (navBarRef.current) {
-        setNavHeight(navBarRef.current.offsetHeight);
-    }
+        const nav = navBarRef.current;
+        if (!nav) return;
+        setNavHeight(nav.offsetHeight);
+        const observer = new ResizeObserver(() => setNavHeight(nav.offsetHeight));
+        observer.observe(nav);
+        return () => observer.disconnect();
     }, [])
 
 
@@ -60,7 +64,7 @@ export default function NavApp({setNavHeight} : NavAppProps) {
                 className=
                     {`fixed top-0 left-0 z-50 
                         w-full max-w-full box-border overflow-x-hidden
-                        flex flex-col md:flex-row md:justify-between items-center 
+                        flex flex-col md:flex-row md:justify-between items-center lg:h-[15vh]
                         transition-transform duration-300 ease-in-out
                         ${showNav ? "translate-y-0" : "-translate-y-full"}
                     `}
@@ -68,18 +72,18 @@ export default function NavApp({setNavHeight} : NavAppProps) {
                 style={{ backgroundColor: COLORS.textDark, color: COLORS.textLight }}
             >
                 {/* Conteneur Gauche : Logo (Desktop uniquement) */}
-                <div className="flex shrink-0 min-w-0 justify-start lg:ml-8 md:mr-20 lg:mr-20 cursor-pointer">
-                    <Link to="/">
+                <div className="flex shrink-0 min-w-0 justify-start lg:h-full lg:ml-8 md:mr-20 lg:mr-20 cursor-pointer">
+                    <Link to="/" className="lg:h-full">
                     <img
                         src="/assets/logo2.png"
                         alt="Logo du magasin Les Petits Géants d'Arras"
-                        className=" h-30 w-30 sm:h-40 sm:w-40 md:h-35 md:w-35 lg:w-45 lg:h-45 md:ml-5 object-contain"
+                        className=" h-30 w-30 sm:h-40 sm:w-40 md:h-35 md:w-35 lg:w-auto lg:h-full md:ml-5 object-contain"
                     /></Link>
                 </div>
 
 
                 {/* Conteneur Droite : Liens (Desktop uniquement) */}
-                <div style={{ color: COLORS.test }} className="flex-1 min-w-0 hidden sm:text-shadow-md md:text-md lg:text-xl md:flex justify-end md:mr-4 gap-4 md:gap-4 lg:gap-6">
+                <div style={{ color: COLORS.test }} className="flex-1 min-w-0 hidden sm:text-shadow-md md:text-md lg:text-[clamp(0.875rem,2.3vh,1.5rem)] md:flex justify-end md:mr-4 gap-4 md:gap-4 lg:gap-6">
                     {MENU_NOM.map((menuNom) => <Link to={menuNom.url} className="text-center hover:opacity-80 transition-opacity font-semibold tracking-wide font-nav">{menuNom.nom}</Link>)}
                 </div>
 
@@ -98,7 +102,7 @@ export default function NavApp({setNavHeight} : NavAppProps) {
                             "opacity-0 -translate-y-2 max-h-0 overflow-hidden pointer-events-none"
                         }
                     `}>
-                        {MENU_NOM.map((menuNom) => <Link to={menuNom.url} className="text-center hover:opacity-80 transition-opacity font-semibold tracking-wide font-nav">{menuNom.nom}</Link>)}
+                        {MENU_NOM.map((menuNom) => <Link to={menuNom.url} className="text-center hover:opacity-80 transition-opacity font-semibold tracking-wide font-nav" onClick={() => setMenuButton(false)}>{menuNom.nom}</Link>)}
 
                     </div>
                 </div>

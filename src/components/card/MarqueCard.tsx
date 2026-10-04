@@ -1,9 +1,9 @@
-import type { MarqueSelect } from "../../types/ImageType";
+import type { ImageSelect } from "../../types/ImageType";
 import { COLORS } from "../../variables/couleur";
 import {motion} from "motion/react";
 
 type Props = {
-    marque: MarqueSelect
+    marque: ImageSelect
 };
 
 export default function MarqueCard({marque} : Props) {

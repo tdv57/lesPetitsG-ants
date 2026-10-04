@@ -6,10 +6,20 @@ export default function LesVideosDuMoment() {
 
     const {videosDuMoment} = useVideoDuMoment();
 
+    const scrollToVideo = (e: React.MouseEvent<HTMLAnchorElement>, index: number) => {
+        const card = document.getElementById(`video-${index}`)?.querySelector<HTMLElement>("[data-video-card]");
+        if (!card) return;
+        e.preventDefault();
+        const rect = card.getBoundingClientRect();
+        const top = rect.top + window.scrollY;
+        const bottom = rect.bottom + window.scrollY;
+        window.scrollTo({ top: Math.min(bottom - window.innerHeight, top), behavior: "smooth" });
+    };
+
     return (<>
         <section className="flex flex-col items-center justify-center ">
             <h2
-                className="text-xl text-center sm:text-3xl lg:text-4xl pt-12 mb-6"
+                className="text-xl text-center sm:text-3xl lg:text-4xl pt-12 lg:pt-[clamp(1rem,4vh,3rem)] mb-6"
                 style={{ background: COLORS.background ,color: COLORS.primary,  fontFamily: "Fredoka" }}
             > 
                 LES VIDEOS DU MOMENT
@@ -21,6 +31,7 @@ export default function LesVideosDuMoment() {
                         <>
                         <a
                             href={`#video-${index}`}
+                            onClick={(e) => scrollToVideo(e, index)}
                             aria-label="Aller à la vidéo suivante"
                             className="my-4 px-4 py-2 rounded-full font-bold"
                             style={{ background: COLORS.primary, color: COLORS.background }}
