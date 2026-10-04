@@ -1,7 +1,7 @@
 export const GenreEnumValue = {
+    TOUS: "TOUS",
     GARCON: "GARCON",
-    FILLE: "FILLE",
-    TOUS: "TOUS"
+    FILLE: "FILLE"    
 } as const;
 
 export type GenreEnum =  (typeof GenreEnumValue)[keyof typeof GenreEnumValue];

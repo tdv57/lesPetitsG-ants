@@ -1,11 +1,11 @@
 import { TypeAgeEnumValue, type TypeAgeEnum } from "./TypeAgeEnum";
 
 export const AgeEnumValue = {
+    TOUS: "Tout âge",
     zeroTroisAns : "0-2 ans",
     troisSixAns: "3-5 ans",
     sixHuitAns: "6-8 ans",
-    neufPlusAns: "9+ ans",
-    TOUS: "Tout âge"
+    neufPlusAns: "9+ ans"
 } as const;
 
 export type AgeEnum = (typeof AgeEnumValue)[keyof typeof AgeEnumValue];

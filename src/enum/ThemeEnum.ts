@@ -1,4 +1,5 @@
 export const ThemeEnumValue = {
+    TOUS: 'TOUS',
     POLICIER: 'POLICIER',
     POMPIER: 'POMPIER',
     COSMONOTE: 'COSMONOTE',
@@ -8,8 +9,7 @@ export const ThemeEnumValue = {
     SIRENE: 'SIRENE',
     CAPE: 'CAPE',
     MEDIEVAL: 'MEDIEVAL',
-    FANTASTIQUE: 'FANTASTIQUE',
-    TOUS: 'TOUS'
+    FANTASTIQUE: 'FANTASTIQUE'
 } as const;
 
 export type ThemeEnum = (typeof ThemeEnumValue)[keyof typeof ThemeEnumValue];
