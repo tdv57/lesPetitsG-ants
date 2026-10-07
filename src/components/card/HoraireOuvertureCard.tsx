@@ -3,11 +3,11 @@ import { COLORS } from "../../variables/couleur";
 export default function HoraireOuvertureCard() {
     const horaires = [
         { jour: 'Lundi', horairesMatin: 'Fermé', horairesAprem: 'Fermé' },
-        { jour: 'Mardi', horairesMatin: '9h - 12h', horairesAprem: '14h - 19h' },
-        { jour: 'Mercredi', horairesMatin: '9h - 12h', horairesAprem: '14h - 19h' },
-        { jour: 'Jeudi', horairesMatin: '9h - 12h', horairesAprem: '14h - 19h' },
-        { jour: 'Vendredi', horairesMatin: '9h - 12h', horairesAprem: '14h - 19h' },
-        { jour: 'Samedi', horairesMatin: '9h - 12h', horairesAprem: '14h - 19h' },
+        { jour: 'Mardi', horairesMatin: '10h - 12h30', horairesAprem: '14h30 - 19h' },
+        { jour: 'Mercredi', horairesMatin: '10h - 12h30', horairesAprem: '14h30 - 19h' },
+        { jour: 'Jeudi', horairesMatin: '10h - 12h30', horairesAprem: '14h30 - 19h' },
+        { jour: 'Vendredi',  horairesMatin: '10h - 12h30', horairesAprem: '14h30 - 19h' },
+        { jour: 'Samedi', horairesMatin: '10h - 12h30', horairesAprem: '14h30 - 19h' },
         { jour: 'Dimanche', horairesMatin: 'Fermé', horairesAprem: 'Fermé' },
     ]
 
