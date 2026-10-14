@@ -8,14 +8,13 @@ type SelectPropType = {
     value: string;
     }[];
     selected: string,
-    setSelected: React.Dispatch<React.SetStateAction<string>>
+     setSelected: (prev: string) => void
     title?: string
 }
 
 export function Select({options, selected, setSelected, title} : SelectPropType) {
     
     const [isOpen, setIsOpen] = useState(false);
-    const [currentValue, setCurrentValue] = useState(options.find((option) => option.label===selected)?.value);
     const containerRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
@@ -52,7 +51,7 @@ export function Select({options, selected, setSelected, title} : SelectPropType)
             fontFamily: "Fredoka",
             }}
         >
-            {currentValue}
+            {selected}
         </button>
 
         <AnimatePresence>
@@ -74,7 +73,7 @@ export function Select({options, selected, setSelected, title} : SelectPropType)
                     onClick={() => {
                     setSelected(option.label);
                     setIsOpen(false);
-                    setCurrentValue(option.value)
+                    setSelected(option.value)
                     }}
                     className="px-3 py-2 text-xs cursor-pointer hover:bg-gray-100 flex items-center justify-center lg:text-lg text-center"
                     style={{
