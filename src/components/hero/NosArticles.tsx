@@ -41,6 +41,7 @@ export function NosArticles() {
         let filteredArticles = articles;
 
         if (isActive === TypeArticleValue.PELUCHE) {
+
             if (selectedMarque !== "Toutes") {
                 return filteredArticles.filter((a) => a.marque === selectedMarque);
             }

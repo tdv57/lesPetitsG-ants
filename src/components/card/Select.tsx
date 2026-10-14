@@ -7,9 +7,9 @@ type SelectPropType = {
     label: string;
     value: string;
     }[];
-    selected: string,
-     setSelected: (prev: string) => void
-    title?: string
+    selected: string;
+    setSelected: (prev: string) => void;
+    title?: string;
 }
 
 export function Select({options, selected, setSelected, title} : SelectPropType) {
