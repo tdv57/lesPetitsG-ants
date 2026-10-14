@@ -20,7 +20,12 @@ export function NosArticles() {
     const [selectedGenre, setSelectedGenre] = useState<string>(GenreEnumValue.TOUS);
     const [selectedTheme, setSelectedTheme] = useState<string>(ThemeEnumValue.TOUS);
     const [selectedEditeur, setSelectedEditeur] = useState<string>("Tous");
-    const [selectedAge, setSelectedAge] = useState<string>(AgeEnumValue.TOUS);
+    const [selectedAges, setSelectedAges] = useState<Partial<Record<TypeArticleEnum, string>>>({});
+    const selectedAge = selectedAges[isActive] ?? AgeEnumValue.TOUS;
+
+    function setSelectedAge(value: string) {
+        setSelectedAges((prev) => ({ ...prev, [isActive]: value }));
+    }
 
     const { data: articles = []} = useQuery({
         queryKey: ["articles", isActive],
@@ -34,14 +39,19 @@ export function NosArticles() {
 
     const filteredArticles = useMemo(() => {
         let filteredArticles = articles;
+
+        if (isActive === TypeArticleValue.PELUCHE && selectedMarque !== "Toutes") {
+            if (selectedMarque !== "Toutes") {
+                return filteredArticles.filter((a) => a.marque === selectedMarque);
+            }
+            return filteredArticles;
+        }
+
         if (selectedAge !== AgeEnumValue.TOUS) {
             filteredArticles = filteredArticles.filter((a) => IsInAge(a.age, a.typeAge, selectedAge as AgeEnum));
         }
-        if (isActive === TypeArticleValue.PELUCHE && selectedMarque !== "Toutes") {
-            return filteredArticles.filter((a) => a.marque === selectedMarque);
-        }
+
         if (isActive === TypeArticleValue.DEGUISEMENT) {
-            
             if (selectedGenre !== GenreEnumValue.TOUS) {
                 filteredArticles = filteredArticles.filter((a) => a.genre === selectedGenre);
             }
@@ -50,8 +60,12 @@ export function NosArticles() {
             }
             return filteredArticles;
         }
-        if (isActive === TypeArticleValue.LIVRE && selectedEditeur !== "Tous") {
-            return filteredArticles.filter((a) => a.marque === selectedEditeur); 
+
+        if (isActive === TypeArticleValue.LIVRE) {
+            if (selectedEditeur !== "Tous") {
+                return filteredArticles.filter((a) => a.marque === selectedEditeur); 
+            }
+            return filteredArticles;
         }
         return filteredArticles;
     },
