@@ -40,7 +40,8 @@ export function NosArticles() {
     const filteredArticles = useMemo(() => {
         let filteredArticles = articles;
 
-        if (isActive === TypeArticleValue.PELUCHE && selectedMarque !== "Toutes") {
+        if (isActive === TypeArticleValue.PELUCHE) {
+
             if (selectedMarque !== "Toutes") {
                 return filteredArticles.filter((a) => a.marque === selectedMarque);
             }
@@ -67,6 +68,7 @@ export function NosArticles() {
             }
             return filteredArticles;
         }
+
         return filteredArticles;
     },
         [articles, isActive, selectedMarque, selectedGenre, selectedTheme, selectedEditeur, selectedAge]
