@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { COLORS } from "../../variables/couleur";
 import { MENU_NOM } from "../../variables/menu";
-import { Link } from "react-router";
+import { Link, useLocation } from "react-router";
 type NavAppProps = {
     setNavHeight : (i:number) => void
 };
@@ -9,6 +9,7 @@ export default function NavApp({setNavHeight} : NavAppProps) {
     const [menuButton, setMenuButton] = useState(false);
     const [showNav, setShowNav] = useState(true);
     const navBarRef =  useRef<HTMLElement | null>(null);
+    const { pathname } = useLocation();
 
     const handleShowNav = (navBarHeight: number, currentScrollY: number, lastScrollY: number) => {
         if (currentScrollY < navBarHeight - 70) {
@@ -56,6 +57,11 @@ export default function NavApp({setNavHeight} : NavAppProps) {
         return () => observer.disconnect();
     }, [])
 
+    const handleLinkClick = (url: string) => {
+        if (url === pathname) {
+            window.scrollTo({ top: 0, behavior: "smooth" });
+        }
+    };
 
     return (
         <>
@@ -84,7 +90,7 @@ export default function NavApp({setNavHeight} : NavAppProps) {
 
                 {/* Conteneur Droite : Liens (Desktop uniquement) */}
                 <div style={{ color: COLORS.test }} className="flex-1 min-w-0 hidden sm:text-shadow-md md:text-md lg:text-[clamp(0.875rem,2.3vh,1.5rem)] md:flex justify-end md:mr-4 gap-4 md:gap-4 lg:gap-6">
-                    {MENU_NOM.map((menuNom) => <Link to={menuNom.url} className="text-center hover:opacity-80 transition-opacity font-semibold tracking-wide font-nav">{menuNom.nom}</Link>)}
+                    {MENU_NOM.map((menuNom) => <Link to={menuNom.url} className="text-center hover:opacity-80 transition-opacity font-semibold tracking-wide font-nav" onClick={() => handleLinkClick(menuNom.url)}>{menuNom.nom}</Link>)}
                 </div>
 
                 <button className={`md:hidden  px-4 mb-4 -mt-6 sm:-mt-8  cursor-pointer`} onClick={() => setMenuButton(!menuButton)}>
@@ -102,7 +108,7 @@ export default function NavApp({setNavHeight} : NavAppProps) {
                             "opacity-0 -translate-y-2 max-h-0 overflow-hidden pointer-events-none"
                         }
                     `}>
-                        {MENU_NOM.map((menuNom) => <Link to={menuNom.url} className="text-center hover:opacity-80 transition-opacity font-semibold tracking-wide font-nav" onClick={() => setMenuButton(false)}>{menuNom.nom}</Link>)}
+                        {MENU_NOM.map((menuNom) => <Link to={menuNom.url} className="text-center hover:opacity-80 transition-opacity font-semibold tracking-wide font-nav" onClick={() => {setMenuButton(false); handleLinkClick(menuNom.url);}}></Link>)}
 
                     </div>
                 </div>

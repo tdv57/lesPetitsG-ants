@@ -1,8 +1,17 @@
 import { COLORS } from "../../variables/couleur";
 import { MENU_NOM } from "../../variables/menu";
-import { Link } from "react-router";
+import { Link, useLocation } from "react-router";
 
 export default function FooterApp() {
+    
+    const { pathname } = useLocation(); 
+    
+    const handleLinkClick = (url: string) => {
+        if (url === pathname) {
+            window.scrollTo({ top: 0, behavior: "smooth" });
+        }
+    };
+
     return (
         <>
             <footer
@@ -11,7 +20,7 @@ export default function FooterApp() {
             >
 
                 <div className=" grid grid-cols-2 md:flex gap-4 sm:gap-8">
-                    {MENU_NOM.map((menuNom) => <Link to={menuNom.url} className="whitespace-nowrap hover:opacity-80 transition-opacity sm:text-sm md:text-md lg:text-lg font-semibold tracking-wide font-nav md:gap-4">{menuNom.nom}</Link>)}
+                    {MENU_NOM.map((menuNom) => <Link to={menuNom.url} className="whitespace-nowrap hover:opacity-80 transition-opacity sm:text-sm md:text-md lg:text-lg font-semibold tracking-wide font-nav md:gap-4" onClick={() => handleLinkClick(menuNom.url)}>{menuNom.nom}</Link>)}
                 </div>
 
                 
