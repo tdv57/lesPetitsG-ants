@@ -24,8 +24,4 @@ export const MENU_NOM : MenuProps[] = [
         nom: "Nos marques phares",
         url: "/marques"
     }, 
-    {
-        nom: "Nos Actualités",
-        url: "/actualites"
-    }
     ];

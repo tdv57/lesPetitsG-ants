@@ -1,7 +1,10 @@
 import { FaEnvelope, FaPhone } from "react-icons/fa";
 import { COLORS } from "../../variables/couleur";
 
-export function NousContacterCard() {
+type NousContacterCardPropsType = {
+    id?: string;
+}
+export function NousContacterCard({id}: NousContacterCardPropsType) {
     const CONTACT = {
         telAffiche: "06 02 11 71 47",
         telLien: "+33602117147",
@@ -9,7 +12,7 @@ export function NousContacterCard() {
     };
     return (
         <>
-            <section className="flex flex-col items-center gap-2 py-8 md:py-8 lg:py-12 px-4">
+            <section id={id} className={`${id ? "scroll-mt-10" : ""} flex flex-col items-center gap-2 py-8 md:py-8 lg:py-12 px-4`}>
                 <h2
                     className="text-sm whitespace-nowrap sm:text-3xl lg:text-4xl font-bold "
                     style={{ color: COLORS.primary, fontFamily: "Fredoka" }}

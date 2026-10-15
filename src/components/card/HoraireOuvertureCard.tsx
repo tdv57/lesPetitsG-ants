@@ -1,33 +1,35 @@
 import { COLORS } from "../../variables/couleur";
 
-export default function HoraireOuvertureCard() {
+type HoraireOuvertureCardPropsType = {
+    id?: string;
+}
+export default function HoraireOuvertureCard({id}: HoraireOuvertureCardPropsType) {
     const horaires = [
         { jour: 'Lundi', horairesMatin: 'Fermé', horairesAprem: 'Fermé' },
-        { jour: 'Mardi', horairesMatin: '10h - 12h30', horairesAprem: '14h30 - 19h' },
-        { jour: 'Mercredi', horairesMatin: '10h - 12h30', horairesAprem: '14h30 - 19h' },
-        { jour: 'Jeudi', horairesMatin: '10h - 12h30', horairesAprem: '14h30 - 19h' },
-        { jour: 'Vendredi',  horairesMatin: '10h - 12h30', horairesAprem: '14h30 - 19h' },
-        { jour: 'Samedi', horairesMatin: '10h - 12h30', horairesAprem: '14h30 - 19h' },
+        { jour: 'Mardi-Samedi', horairesMatin: '10h - 12h30', horairesAprem: '14h30 - 19h' },
         { jour: 'Dimanche', horairesMatin: 'Fermé', horairesAprem: 'Fermé' },
     ]
 
     return (
         <>
-            <h2 className="text-sm whitespace-nowrap sm:text-2xl lg:text-3xl font-bold mb-6" style={{ color: COLORS.primary, fontFamily: "Fredoka" }}>Nos Horaires d'ouverture :</h2>
-            <table style={{ backgroundColor: COLORS.backgroundCard, fontFamily: "Fredoka" }} className={`w-full text-sm md:text-lg lg:text-2xl max-w-md lg:max-w-2xl mx-auto text-center`}>
-                <tr style={{ color: COLORS.textDark }}>
-                    <th style={{ borderColor: COLORS.test }} className="border-separate border-2 px-2 py-1 lg:px-6 lg:py-3" >Jour</th>
-                    <th style={{ borderColor: COLORS.test }} className="border-separate border-2 px-2 py-1 lg:px-6 lg:py-3">Matin</th>
-                    <th style={{ borderColor: COLORS.test }} className="border-separate border-2 px-2 py-1 lg:px-6 lg:py-3">Après-midi</th>
-                </tr>
-                {horaires.map((horaire, index) => (
-                    <tr className="" style={{ color: COLORS.textDark }} key={`${index}-${horaire.jour}`}>
-                        <td style={{ borderColor: COLORS.test }} className="border-separate border-2 px-2 py-1 lg:px-6 lg:py-3">{horaire.jour}</td>
-                        <td style={{ borderColor: COLORS.test }} className="border-separate border-2 px-2 py-1 lg:px-6 lg:py-3">{horaire.horairesMatin}</td>
-                        <td style={{ borderColor: COLORS.test }} className="border-separate border-2 px-2 py-1 lg:px-6 lg:py-3">{horaire.horairesAprem}</td>
+            <section id ={id} className={`${id ? "scroll-mt-10" : ""} flex flex-col items-center gap-2 py-8 md:py-8 lg:py-12 px-4`}>
+                <h2 className="text-sm whitespace-nowrap sm:text-2xl lg:text-3xl font-bold mb-6" style={{ color: COLORS.primary, fontFamily: "Fredoka" }}>Nos Horaires d'ouverture :</h2>
+                <table style={{ backgroundColor: COLORS.backgroundCard, fontFamily: "Fredoka" }} className={`w-full text-sm md:text-lg lg:text-2xl max-w-md lg:max-w-2xl mx-auto text-center`}>
+                    <tr style={{ color: COLORS.textDark }}>
+                        <th style={{ borderColor: COLORS.test }} className="border-separate border-2 px-2 py-1 lg:px-6 lg:py-3" >Jour</th>
+                        <th style={{ borderColor: COLORS.test }} className="border-separate border-2 px-2 py-1 lg:px-6 lg:py-3">Matin</th>
+                        <th style={{ borderColor: COLORS.test }} className="border-separate border-2 px-2 py-1 lg:px-6 lg:py-3">Après-midi</th>
                     </tr>
-                ))}
-            </table>
+                    {horaires.map((horaire, index) => (
+                        <tr className="" style={{ color: COLORS.textDark }} key={`${index}-${horaire.jour}`}>
+                            <td style={{ borderColor: COLORS.test }} className="border-separate border-2 px-2 py-1 lg:px-6 lg:py-3">{horaire.jour}</td>
+                            <td style={{ borderColor: COLORS.test }} className="border-separate border-2 px-2 py-1 lg:px-6 lg:py-3">{horaire.horairesMatin}</td>
+                            <td style={{ borderColor: COLORS.test }} className="border-separate border-2 px-2 py-1 lg:px-6 lg:py-3">{horaire.horairesAprem}</td>
+                        </tr>
+                    ))}
+                    <div id={id}></div>
+                </table>
+            </section>
         </>
     )
 }
