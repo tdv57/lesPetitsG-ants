@@ -2,17 +2,17 @@ import { useEffect, useRef, useState } from "react";
 import { COLORS } from "../../variables/couleur";
 import { AnimatePresence, motion } from "motion/react";
 
-type SelectPropType = {
+type SelectPropType<T extends string> = {
     options: {
     label: string;
     value: string;
     }[];
     selected: string;
-    setSelected: (prev: string) => void;
+    setSelected: (prev: T) => void;
     title?: string;
 }
 
-export function Select({options, selected, setSelected, title} : SelectPropType) {
+export function Select<T extends string>({options, selected, setSelected, title} : SelectPropType<T>) {
     
     const [isOpen, setIsOpen] = useState(false);
     const containerRef = useRef<HTMLDivElement>(null);
@@ -71,9 +71,8 @@ export function Select({options, selected, setSelected, title} : SelectPropType)
                 <li
                     key={index}
                     onClick={() => {
-                    setSelected(option.label);
                     setIsOpen(false);
-                    setSelected(option.value)
+                    setSelected(option.label as T)
                     }}
                     className="px-3 py-2 text-xs cursor-pointer hover:bg-gray-100 flex items-center justify-center lg:text-lg text-center"
                     style={{

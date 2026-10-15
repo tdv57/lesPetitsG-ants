@@ -5,6 +5,7 @@ import { motion } from "motion/react"
 import { COLORS } from "../../variables/couleur"
 import { mapAge } from "../../mapper/UtilsMapper";
 import type { TypeAgeEnum } from "../../enum/TypeAgeEnum";
+import { TypeArticleEnumValue, type TypeArticleEnum } from "../../enum/TypeArticleEnum";
 
 export type ArticlePropsType = {
     url: string;
@@ -12,9 +13,10 @@ export type ArticlePropsType = {
     nom?: string | null; 
     age?: number;
     typeAge?: TypeAgeEnum; 
+    typeArticle: TypeArticleEnum;
 }
 
-export function Article({ url, marque, nom, age, typeAge }: ArticlePropsType) {
+export function Article({ url, marque, nom, age, typeAge, typeArticle }: ArticlePropsType) {
 
     const wrapperRef = useRef<HTMLDivElement | null>(null);
     const textRef = useRef<HTMLDivElement | null>(null);
@@ -48,7 +50,12 @@ export function Article({ url, marque, nom, age, typeAge }: ArticlePropsType) {
         else return "";
     }
 
-    function getNomAndAge(): string {
+    function showNomAndAge(): string {
+        if (!(typeArticle === TypeArticleEnumValue.JEU_DE_SOCIETE 
+            || typeArticle === TypeArticleEnumValue.JOUET 
+            || typeArticle === TypeArticleEnumValue.LIVRE
+            || typeArticle === TypeArticleEnumValue.LOISIR_CREATIF
+        )) return "";
         if (nom && age) return nom + "\n\n" + age;
         return "";
     }
@@ -64,7 +71,7 @@ export function Article({ url, marque, nom, age, typeAge }: ArticlePropsType) {
                 className="px-8 w-50 sm:w-50 md:w-60 h-75 sm:h-70 md:h-80 lg:w-[clamp(15rem,20vw,26rem)] lg:h-[clamp(20rem,28vw,34rem)] rounded-4xl"
             >
                 <div ref={wrapperRef} className="flex-col flex h-full w-full items-center">
-                    { getNomAndAge() && 
+                    { showNomAndAge() && 
                     (<div ref={textRef} className="min-h-0 overflow-hidden">
                         <h3 style={{color: COLORS.primary, fontFamily: "Fredoka"}} className="text-xs md:text-sm lg:text-lg text-center">{nom}</h3> 
                         <h3 style={{color: COLORS.primary, fontFamily: "Fredoka"}} className="text-xs md:text-xs lg:text-lg text-center">{mapAge(age, typeAge)}</h3>                     
