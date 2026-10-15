@@ -28,7 +28,7 @@ export default function Accueil() {
                 fontFamily: "Fredoka",
                 }}
                 >
-                    Notre Catalogue
+                    Notre catalogue
                 </a>
                 <a 
                 href="#AccueilNosReseauxCard"
