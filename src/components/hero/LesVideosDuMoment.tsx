@@ -36,15 +36,13 @@ export default function LesVideosDuMoment() {
                             className="my-4 px-4 py-2 rounded-full font-bold"
                             style={{ background: COLORS.primary, color: COLORS.background }}
                         >
-                            ↓ Vidéo suivante
+                            ↓ Annonce suivante
                         </a>
                         <div
                             key={index}
                             id={`video-${index}`}
                             className="flex flex-col items-center scroll-mt-[var(--nav-h)]"
                         >
-
-
 
                         <VideoCard
                             key={index}

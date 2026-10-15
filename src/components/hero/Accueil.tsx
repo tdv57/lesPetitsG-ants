@@ -2,6 +2,7 @@ import { COLORS } from "../../variables/couleur";
 import HoraireOuvertureCard from "../card/HoraireOuvertureCard";
 import { NousContacterCard } from "../card/NousContacterCard";
 import { NosReseauxCard } from "../card/NosReseauxCard";
+import { CatalogueCard } from "../card/CatalogueCard";
 
 export default function Accueil() {
     return (
@@ -16,7 +17,9 @@ export default function Accueil() {
                 <p>Nous sommes Les Petits Géants d'Arras, votre magasin de jeux et jouets pour enfants.</p>
                 <p className="text-center">Vous pouvez nous trouver au  <span className="whitespace-nowrap font-bold">10 Place du Théâtre, 62000 Arras.</span></p>
             </div>
+
             <div className="pt-8">
+                <CatalogueCard/>
                 <NosReseauxCard/>
                 <NousContacterCard/>
                 <HoraireOuvertureCard />

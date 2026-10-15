@@ -1,8 +1,9 @@
+import type { TypeImageEnum } from "../enum/TypeImageEnum";
 import { mapImageSelectFromSupabase } from "../mapper/ImageMapper";
-import type { ImageSelect, TYPE_IMAGE_TYPE } from "../types/ImageType";
+import type { ImageSelect } from "../types/ImageType";
 import { supabase, TABLE_IMAGE } from "./VideoService";
 
-export async function getImageByType(typeImage: TYPE_IMAGE_TYPE) : Promise<ImageSelect[]>  {
+export async function getImageByType(typeImage: TypeImageEnum) : Promise<ImageSelect[]>  {
     const {data, error} = await supabase.from(TABLE_IMAGE).select().eq("type_image", typeImage);
     if (error) {
         console.log("getImageError : ", error);
