@@ -70,7 +70,7 @@ export default function NavApp({setNavHeight} : NavAppProps) {
                 className=
                     {`fixed top-0 left-0 z-50 
                         w-full max-w-full box-border overflow-x-hidden
-                        flex flex-col md:flex-row md:justify-between items-center lg:h-[15vh]
+                        flex flex-col md:flex-row md:justify-between items-center lg:h-[15vh] lg:min-h-30
                         transition-transform duration-300 ease-in-out
                         ${showNav ? "translate-y-0" : "-translate-y-full"}
                     `}
