@@ -53,7 +53,7 @@ export async  function getVideoArticleDeLaSaison() {
 }
 
 export async function getSupabaseVideosDuMoment() : Promise<VideoSelectType[] | null>{
-    const {data, error} = await supabase.from(TABLE_VIDEO).select();
+    const {data, error} = await supabase.from(TABLE_VIDEO).select().order('created_at', { ascending: false });
     if (error ) {
         return null;
     }    
