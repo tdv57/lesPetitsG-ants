@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import { COLORS } from "../../variables/couleur";
 import { VideoCard } from "../card/VideoCard";
 import { useVideoDuMoment } from "../../hook/useVideosDuMoment";
@@ -24,40 +25,40 @@ export default function LesVideosDuMoment() {
             > 
                 LES VIDEOS DU MOMENT
             </h2>   
+            <div className="contents md:grid md:grid-cols-2 md:gap-4 md:w-full md:max-w-[1400px] md:px-4">
             {
                 videosDuMoment.map((video, index) =>
                 {
                     return (
-                        <>
+                        <Fragment key={index}>
                         <a
                             href={`#video-${index}`}
                             onClick={(e) => scrollToVideo(e, index)}
                             aria-label="Aller à la vidéo suivante"
-                            className="my-4 px-4 py-2 rounded-full font-bold"
+                            className="my-4 px-4 py-2 rounded-full font-bold md:hidden"
                             style={{ background: COLORS.primary, color: COLORS.background }}
                         >
-                            ↓ Annonce suivante
+                            ↓ Vidéo suivante
                         </a>
                         <div
-                            key={index}
                             id={`video-${index}`}
-                            className="flex flex-col items-center scroll-mt-[var(--nav-h)]"
+                            className="flex flex-col items-center scroll-mt-[var(--nav-h)] md:min-w-0 md:h-full"
                         >
 
                         <VideoCard
-                            key={index}
                             src={video.src}
                             titre={video.titre}
                             age={video.age}
-                            sizeClassName="w-[85vw] max-w-[1100px] h-[48vh] sm:h-[52vh] lg:h-[58vh]"
+                            sizeClassName="w-[85vw] max-w-[1100px] h-[48vh] sm:h-[52vh] md:w-full md:max-w-none md:h-[40vh] lg:h-[48vh]"
                         />
                         </div>
-                        </>
+                        </Fragment>
                     );
                 }
 
                 )
             }
+            </div>
 
         </section>
     </>);

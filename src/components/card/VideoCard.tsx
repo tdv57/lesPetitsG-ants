@@ -39,13 +39,13 @@ export const VideoCard = forwardRef<HTMLDivElement, VideoCardProp>(({src, titre,
 
   return (
   <>
-    <div className="p-4  w-full flex justify-center">
-      <div data-video-card className="  flex flex-col items-center rounded-lg" style={{background: COLORS.backgroundCard}} >
-         <h2 style={{color: COLORS.primary, fontFamily: "Fredoka"}} className="py-4 px-4 md:py-8 md:px-8 lg:px-12 lg:py-12 text-center">
+    <div className="p-4  w-full h-full flex justify-center">
+      <div data-video-card className="  flex flex-col items-center justify-between h-full md:w-full rounded-lg" style={{background: COLORS.backgroundCard}} >
+         <h2 style={{color: COLORS.primary, fontFamily: "Fredoka"}} className="py-4 px-4 md:py-8 md:px-8 lg:px-12 lg:py-12 text-center md:h-[11rem] lg:h-[13rem] md:flex md:flex-col md:justify-center md:overflow-hidden">
           {titre && <h3 className="text-lg sm:text-xl md:text-2xl lg:text-3xl ">{titre}</h3>}
           {age && <h3 className="text-lg sm:text-lg md:text-xl lg:text-2xl ">{age}</h3>}
           </h2>         
-          <div ref={ref} className="p-4 sm:px-8 sm:py-0 sm:pb-8 lg:px-12 w-full flex justify-center">
+          <div ref={ref} className="p-4 sm:px-8 md:px-4 sm:py-0 sm:pb-8 lg:px-4 w-full flex justify-center">
               <div className={`relative flex flex-col items-center justify-center overflow-hidden ${sizeClassName}`}>
                   <video
                       controls 
@@ -58,7 +58,7 @@ export const VideoCard = forwardRef<HTMLDivElement, VideoCardProp>(({src, titre,
                       autoPlay
                   >
                       <source src={src} />
-                      Vptre navigateur ne supporte pas la vidéo.
+                      Votre navigateur ne supporte pas la vidéo.
                   </video>
               </div>
           </div>
