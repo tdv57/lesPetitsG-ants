@@ -1,4 +1,5 @@
 import { createClient } from "@supabase/supabase-js";
+import { mapAge } from "../mapper/UtilsMapper";
 
 export type VideoSelectType = {
     id: number,
@@ -31,7 +32,7 @@ export async function getSupabaseArticleDeLaSaison() : Promise<VideoSelectType |
         return {
             url: articleDeLaSaison.url, 
             description: articleDeLaSaison.description,
-            age: getAge(articleDeLaSaison.age,articleDeLaSaison.type_age),
+            age: mapAge(articleDeLaSaison.age,articleDeLaSaison.type_age),
             created_at: articleDeLaSaison.created_at,
             id: articleDeLaSaison.id
         }
@@ -52,7 +53,7 @@ export async  function getVideoArticleDeLaSaison() {
 }
 
 export async function getSupabaseVideosDuMoment() : Promise<VideoSelectType[] | null>{
-    const {data, error} = await supabase.from(TABLE_VIDEO).select();
+    const {data, error} = await supabase.from(TABLE_VIDEO).select().order('created_at', { ascending: false });
     if (error ) {
         return null;
     }    
@@ -60,7 +61,7 @@ export async function getSupabaseVideosDuMoment() : Promise<VideoSelectType[] | 
         return {
             url: d.url,
             description: d.description,
-            age: getAge(d.age,d.type_age),
+            age: mapAge(d.age,d.type_age),
             created_at: d.created_at,
             id: d.id
         };
@@ -78,22 +79,4 @@ export async function getVideosDuMoment() {
             age: d.age
         }
     });
-}
-
-function getAge(age: number, type_age: "ANS" | "MOIS") : string {
-    if( !age || age < 0 || !type_age || (type_age !== "ANS" && type_age !== "MOIS")) {
-        return "";
-    }
-    console.log("getAge : ", age, type_age);
-    if (type_age === "ANS") {
-        if (Number(age) === 1 || Number(age) === 0) {
-            return "Dès " + age + " an";
-        } else {
-            return "Dès " + age + " ans";
-        }
-    }
-    else if (type_age === "MOIS") {
-        return "Dès " + age + " mois";
-    }
-    return ""; 
 }

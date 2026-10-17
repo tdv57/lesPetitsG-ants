@@ -6,7 +6,7 @@ import { supabase, TABLE_IMAGE } from "./VideoService";
 export const fetchMARQUES = async (page: number, limite: number) => {
     const from = (page-1)*limite;
     const to = (page*limite) - 1;
-    const {data, error} = await supabase.from(TABLE_IMAGE).select().eq("type_image", "MARQUE").range(from, to);
+    const {data, error} = await supabase.from(TABLE_IMAGE).select().eq("type_image", "MARQUE").order('created_at', { ascending: false }).range(from, to);
     if (error) {
         console.log("getImageError : ", error);
         return [];

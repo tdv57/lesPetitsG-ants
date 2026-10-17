@@ -23,5 +23,5 @@ export const MENU_NOM : MenuProps[] = [
     {
         nom: "Nos marques phares",
         url: "/marques"
-    }
+    }, 
     ];
