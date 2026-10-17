@@ -22,6 +22,6 @@ export const typeArticleCollection = ({
         { label: TypeArticleEnumValue.LIVRE, value: 'Livres' },
         { label: TypeArticleEnumValue.BIJOUX, value: 'Bijoux' },
         { label: TypeArticleEnumValue.DECORATION, value: 'Décorations' },
-        { label: TypeArticleEnumValue.BAGAGERIE, value: 'Bagageries' }
+        { label: TypeArticleEnumValue.BAGAGERIE, value: 'Bagagerie' }
     ],
 });
