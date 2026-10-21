@@ -9,6 +9,10 @@ export const MENU_NOM : MenuProps[] = [
         url: "/"
     }, 
     {
+        nom: "Nos annonces",
+        url: "/annonces"
+    },
+    {
         nom: "Nos articles",
         url : "/articles"
     }, 

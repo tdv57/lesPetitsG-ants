@@ -9,33 +9,7 @@ type VideoCardProp = {
 };
 
 export const VideoCard = forwardRef<HTMLDivElement, VideoCardProp>(({src, titre, age, sizeClassName = "w-80 sm:w-100 md:w-100 h-60 sm:h-72 md:h-80"}, ref) => {
-
-  const [_size, setSize] = useState({width: 0, height: 0});
-
   const videoRef = useRef<HTMLVideoElement | null>(null);
-
-  useEffect(() => {
-    const videoRefCurrent = videoRef.current;
-    if(!videoRefCurrent) return;
-
-
-      const observer = new ResizeObserver(() => {
-      const rect = videoRefCurrent.getBoundingClientRect();
-
-      setSize({
-        width: rect.width,
-        height: rect.height,
-      });
-    });
-
-
-
-  observer.observe(videoRefCurrent);
-
-  return () => observer.disconnect();
-
-
-  }, [videoRef])
 
   return (
   <>
@@ -58,7 +32,6 @@ export const VideoCard = forwardRef<HTMLDivElement, VideoCardProp>(({src, titre,
                       autoPlay
                   >
                       <source src={src} />
-                      Votre navigateur ne supporte pas la vidéo.
                   </video>
               </div>
           </div>
