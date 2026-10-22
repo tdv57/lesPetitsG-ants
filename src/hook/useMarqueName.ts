@@ -1,10 +1,11 @@
-import { useContext } from "react";
-import { MarqueNameContext } from "../components/context/MarqueNameProvider";
+import { getImageByType } from "../service/ImageService";
+import { useQuery } from "@tanstack/react-query";
+import { QueryKeys } from "../queries/QueryKeys";
+import { TypeImageEnumValue } from "../enum/TypeImageEnum";
 
 export function useMarqueName() {
-    const context = useContext(MarqueNameContext);
-    if (! context) {
-        throw new Error("useMarqueName doit être utilisé à l'intérieur d'un MarqueNameProvider");
-    }
-    return context;
+    return useQuery({
+        queryKey: QueryKeys.marques.findAll(),
+        queryFn: () => getImageByType(TypeImageEnumValue.MARQUE),
+    });
 }

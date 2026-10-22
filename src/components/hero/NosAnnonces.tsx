@@ -3,10 +3,11 @@ import { findAllAnnonce } from "../../service/AnnonceService";
 import { COLORS } from "../../variables/couleur";
 import { Fragment } from "react/jsx-runtime";
 import { AnnonceCard } from "../card/AnnonceCard";
+import { QueryKeys } from "../../queries/QueryKeys";
 
 export function NosAnnonces() {
     const { data: annonces = []} = useQuery({
-        queryKey: ["annonces"],
+        queryKey: QueryKeys.annonces.findAll(),
         queryFn: () => findAllAnnonce()
     });
 
