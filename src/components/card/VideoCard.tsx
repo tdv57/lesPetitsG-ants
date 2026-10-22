@@ -1,5 +1,6 @@
 import { forwardRef, useEffect, useRef, useState } from "react";
 import { COLORS } from "../../variables/couleur";
+import { LoadingCard } from "./LoadingCard";
 
 type VideoCardProp = {
     src: string;
@@ -10,7 +11,14 @@ type VideoCardProp = {
 
 export const VideoCard = forwardRef<HTMLDivElement, VideoCardProp>(({src, titre, age, sizeClassName = "w-80 sm:w-100 md:w-100 h-60 sm:h-72 md:h-80"}, ref) => {
   const videoRef = useRef<HTMLVideoElement | null>(null);
+  const [prete, setPrete] = useState(false);
 
+    useEffect(() => {
+        setPrete(false);
+        if (videoRef.current && videoRef.current.readyState >= 2) {
+            setPrete(true);
+        }
+    }, [src]);
   return (
   <>
     <div className="p-4  w-full h-full flex justify-center">
@@ -21,6 +29,11 @@ export const VideoCard = forwardRef<HTMLDivElement, VideoCardProp>(({src, titre,
           </h2>         
           <div ref={ref} className="p-4 sm:px-8 md:px-4 sm:py-0 sm:pb-8 lg:px-4 w-full flex justify-center">
               <div className={`relative flex flex-col items-center justify-center overflow-hidden ${sizeClassName}`}>
+                {
+                    
+                    !prete && 
+                    <LoadingCard/>
+                }
                   <video
                       controls 
                       muted 
@@ -28,7 +41,9 @@ export const VideoCard = forwardRef<HTMLDivElement, VideoCardProp>(({src, titre,
                       disablePictureInPicture 
                       disableRemotePlayback 
                       ref={videoRef} 
-                      className="rounded-lg max-w-full max-h-full w-auto h-auto object-contain"
+                      preload="metadata"
+                      onLoadedData={() => setPrete(true)}
+                      className={`rounded-lg max-w-full max-h-full w-auto h-auto object-contain ${prete ? "" : "hidden"}`}
                       autoPlay
                   >
                       <source src={src} />
@@ -36,8 +51,7 @@ export const VideoCard = forwardRef<HTMLDivElement, VideoCardProp>(({src, titre,
               </div>
           </div>
       </div>
-  </div>
-
+    </div>
   </>
   );
 });
