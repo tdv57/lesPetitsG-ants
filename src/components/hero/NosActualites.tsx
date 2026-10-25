@@ -5,7 +5,7 @@ import { Fragment } from "react/jsx-runtime";
 import { AnnonceCard } from "../card/AnnonceCard";
 import { QueryKeys } from "../../queries/QueryKeys";
 
-export function NosAnnonces() {
+export function NosActualites() {
     const { data: annonces = []} = useQuery({
         queryKey: QueryKeys.annonces.findAll(),
         queryFn: () => findAllAnnonce()
@@ -17,7 +17,7 @@ export function NosAnnonces() {
                 className="text-xl text-center sm:text-3xl lg:text-4xl pt-12 lg:pt-[clamp(1rem,4vh,3rem)] mb-6"
                 style={{ background: COLORS.background ,color: COLORS.primary,  fontFamily: "Fredoka" }}
             > 
-                NOS ANNONCES
+                NOS ACTUALITÉS
             </h2>   
             <div className="flex flex-col items-center gap-6 md:w-full md:max-w-[1400px] md:px-4">
             {

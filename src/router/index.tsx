@@ -6,7 +6,7 @@ import NotFound from "../components/hero/NotFound";
 import App from "../App";
 import LesVideosDuMoment from "../components/hero/LesVideosDuMoment";
 import { NosArticles } from "../components/hero/NosArticles";
-import { NosAnnonces } from "../components/hero/NosAnnonces";
+import { NosActualites } from "../components/hero/NosActualites";
 
 export const router = createBrowserRouter([{
     children : 
@@ -32,8 +32,8 @@ export const router = createBrowserRouter([{
             element: <NosArticles/>
         },
         {
-            path: "/annonces",
-            element: <NosAnnonces/>
+            path: "/actualites",
+            element: <NosActualites/>
         },
         {
             path: "*",
