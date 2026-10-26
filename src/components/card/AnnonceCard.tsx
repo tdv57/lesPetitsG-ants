@@ -13,7 +13,7 @@ export const AnnonceCard = (({annonce, sizeClassName = "w-80 sm:w-100 md:w-100 h
             id={annonce.code}
             alt={`${annonce.commentaire} -- ${annonce.url}`}
             src={annonce.url}
-            className="max-w-full max-h-full w-auto h-auto object-contain"
+            className="w-full h-full object-contain"
         />
     );
   return (
@@ -43,10 +43,10 @@ export const AnnonceCard = (({annonce, sizeClassName = "w-80 sm:w-100 md:w-100 h
                 {
                     annonce.mediaType === "IMAGE"
                     && 
-                    <div className="flex-1 flex items-center justify-center w-[85%] min-h-0 py-4">
+                    <div className="flex-1 flex items-center justify-center w-full h-full min-h-0 py-2">
                         {
                             annonce.redirectionLink ? 
-                            <a href={annonce.redirectionLink} target="_blank">
+                            <a href={annonce.redirectionLink} target="_blank" className="block w-full h-full">
                                 {image}
                             </a>
                             :

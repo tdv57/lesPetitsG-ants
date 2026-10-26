@@ -31,7 +31,7 @@ export function NosActualites() {
                         >
                         <AnnonceCard
                             annonce={annonce}
-                            sizeClassName="w-full max-w-none h-[40vh] lg:h-[48vh]"
+                            sizeClassName="w-full max-w-none h-[max(40vh,20rem)] lg:h-[max(48vh,24rem)]"
                         />
                         </div>
                         </Fragment>
