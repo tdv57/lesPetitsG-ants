@@ -16,7 +16,13 @@ export function NosReseauxCard({ id }: NosReseauxCardPropsType) {
                 className="text-sm whitespace-nowrap sm:text-3xl lg:text-4xl font-bold mb-6"
                 style={{ color: COLORS.primary, fontFamily: "Fredoka" }}
             >
-                Nos réseaux sociaux
+                Nos réseaux sociaux 
+            </h2>
+            <h2
+                className="text-sm whitespace-nowrap sm:text-xl lg:text-2xl mb-6"
+                style={{ color: COLORS.primary, fontFamily: "Fredoka" }}
+            >
+                Cliquez sur les logos pour y accéder
             </h2>
 
             {/* 1. Réseaux sociaux : juste les logos */}

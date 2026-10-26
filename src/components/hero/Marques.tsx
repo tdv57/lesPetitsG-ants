@@ -3,6 +3,7 @@ import {fetchMARQUES} from "../../service/MarqueService";
 import MarqueCard from "../card/MarqueCard";
 import { useEffect, useRef } from "react";
 import { useInfiniteQuery } from "@tanstack/react-query";
+import { QueryKeys } from "../../queries/QueryKeys";
 
 export default function Marques() {
     
@@ -10,7 +11,7 @@ export default function Marques() {
     const loaderRef = useRef<HTMLDivElement | null>(null);
     
     const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteQuery({
-        queryKey: ["marques"],
+        queryKey: QueryKeys.marques.infiniteScroll(),
         queryFn: ({ pageParam }) => fetchMARQUES(pageParam, LIMITE),
         initialPageParam: 1,
         getNextPageParam: (lastPage, allPages) =>

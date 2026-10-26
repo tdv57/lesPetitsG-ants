@@ -11,10 +11,11 @@ import { GenreEnumOption, GenreEnumValue } from "../../enum/GenreEnum";
 import { ThemeEnumOption, ThemeEnumValue } from "../../enum/ThemeEnum";
 import { getEditeur } from "../../service/EditeurService";
 import { AgeEnumOption, AgeEnumValue, IsInAge, type AgeEnum } from "../../enum/AgeEnum";
+import { QueryKeys } from "../../queries/QueryKeys";
 
 export function NosArticles() {
 
-    const {marques} = useMarqueName();
+    const {data: marques = []} = useMarqueName();
     const [isActive, setIsActive] = useState<TypeArticleEnum>(TypeArticleEnumValue.JOUET);
     const [selectedMarque, setSelectedMarque] = useState<string>("Toutes");
     const [selectedGenre, setSelectedGenre] = useState<string>(GenreEnumValue.TOUS);
@@ -30,12 +31,12 @@ export function NosArticles() {
     const isActiveName = typeArticleCollection.items.find((v) => v.label === isActive)?.value;
 
     const { data: articles = []} = useQuery({
-        queryKey: ["articles", isActive],
+        queryKey: QueryKeys.articles.byArticle(isActive),
         queryFn: () => getArticles(isActive)
     });
 
     const { data: editeurs = [] } = useQuery({
-        queryKey: ["editeurs"],
+        queryKey: QueryKeys.marques.editeur(),
         queryFn: () => getEditeur()
     });
 
@@ -75,6 +76,48 @@ export function NosArticles() {
     },
         [articles, isActive, selectedMarque, selectedGenre, selectedTheme, selectedEditeur, selectedAge]
     );
+
+    const marqueOptions = useMemo(() => {
+    const marquesDisponibles = new Set(
+        articles
+        .map(a => a.marque)
+        .filter((m): m is string => m !== undefined)
+    )
+
+    return (marques ?? []).flatMap(m =>
+        m.marque !== undefined && marquesDisponibles.has(m.marque)
+        ? [{ label: m.marque, value: m.marque }]
+        : []
+    )
+    }, [filteredArticles, marques])
+
+    const themesOptions = useMemo(() => {
+    if (isActive !== TypeArticleEnumValue.DEGUISEMENT) return []
+
+    const themesDisponibles = new Set(
+        articles
+        .map(a => a.theme)
+        .filter((t): t is string => t !== undefined)
+    )
+
+    return ThemeEnumOption.filter(option => themesDisponibles.has(option.value))
+    }, [isActive, filteredArticles])
+
+    const editeurOptions = useMemo(() => {
+    if (isActive !== TypeArticleEnumValue.LIVRE) return []
+
+    const editeurDisponibles = new Set(
+        articles
+        .map(a => a.marque)
+        .filter((t): t is string => t !== undefined)
+    )
+
+    return (editeurs ?? []).flatMap(editeur =>
+         editeurDisponibles.has(editeur)
+        ? [{ label: editeur, value: editeur }]
+        : []
+    )
+    }, [filteredArticles, editeurs])
 
     function handleButton(nomArticle: NOMS_ARTICLES_TYPE) {
         setIsActive(nomArticle);
@@ -119,15 +162,15 @@ export function NosArticles() {
                 <Select options={AgeEnumOption} selected={selectedAge} setSelected={setSelectedAge} title="Tranche d'âge"/>
             }
             {(isActive===TypeArticleEnumValue.PELUCHE || isActive===TypeArticleEnumValue.BIJOUX || isActive===TypeArticleEnumValue.BAGAGERIE)
-                && <Select options={marques} selected={selectedMarque} setSelected={setSelectedMarque} title="Marque"/> 
+                && <Select options={marqueOptions} selected={selectedMarque} setSelected={setSelectedMarque} title="Marque"/> 
             }
             {isActive===TypeArticleEnumValue.LIVRE && 
-                <Select options={[{ label: "Tous", value: "Tous" }, ...editeurs.map((editeur) => ({ label: editeur, value: editeur }))]} selected={selectedEditeur} setSelected={setSelectedEditeur} title="Éditeur"/> 
+                <Select options={[{ label: "Tous", value: "Tous" }, ...editeurOptions]} selected={selectedEditeur} setSelected={setSelectedEditeur} title="Éditeur"/> 
             }
             {isActive===TypeArticleEnumValue.DEGUISEMENT && 
                 <>
                 <Select options={GenreEnumOption} selected={selectedGenre} setSelected={setSelectedGenre} title="Genre"/> 
-                <Select options={ThemeEnumOption} selected={selectedTheme} setSelected={setSelectedTheme} title="Theme"/> 
+                <Select options={themesOptions} selected={selectedTheme} setSelected={setSelectedTheme} title="Theme"/> 
                 </>
 
             }

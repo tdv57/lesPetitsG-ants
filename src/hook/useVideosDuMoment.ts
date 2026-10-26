@@ -1,10 +1,10 @@
-import { useContext } from "react";
-import { VideoDuMomentContext } from "../components/context/VideoDuMomentProvider";
+import { QueryKeys } from "../queries/QueryKeys";
+import { getVideosDuMoment } from "../service/VideoService";
+import { useQuery } from "@tanstack/react-query";
 
-export function useVideoDuMoment() {
-    const context = useContext(VideoDuMomentContext);
-    if (! context) {
-        throw new Error("useVideoDuMoment doit être utilisé à l'intérieur d'un VideoDuMomentProvider");
-    }
-    return context;
+export function useVideosDuMoment() {
+  return useQuery({
+    queryKey: QueryKeys.videos.duMoment(),
+    queryFn: getVideosDuMoment,
+ });
 }

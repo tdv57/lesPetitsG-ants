@@ -1,11 +1,13 @@
 import { Fragment } from "react";
 import { COLORS } from "../../variables/couleur";
 import { VideoCard } from "../card/VideoCard";
-import { useVideoDuMoment } from "../../hook/useVideosDuMoment";
+import { LoadingCard } from "../card/LoadingCard";
+import { useVideosDuMoment } from "../../hook/useVideosDuMoment";
 
 export default function LesVideosDuMoment() {
 
-    const {videosDuMoment} = useVideoDuMoment();
+    const {data : videosDuMoment,  isPending, isError} = useVideosDuMoment();
+
 
     const scrollToVideo = (e: React.MouseEvent<HTMLAnchorElement>, index: number) => {
         const card = document.getElementById(`video-${index}`)?.querySelector<HTMLElement>("[data-video-card]");
@@ -27,6 +29,19 @@ export default function LesVideosDuMoment() {
             </h2>   
             <div className="contents md:grid md:grid-cols-2 md:gap-4 md:w-full md:max-w-[1400px] md:px-4">
             {
+                isPending || isError ?  (
+                <> 
+                    <div
+                    className="flex flex-col items-center scroll-mt-[var(--nav-h)] md:min-w-0 md:h-full"
+                    >
+                        <LoadingCard/> 
+                    </div>
+                    <div
+                    className="flex flex-col items-center scroll-mt-[var(--nav-h)] md:min-w-0 md:h-full"
+                    >
+                        <LoadingCard/> 
+                    </div>
+                </>) : 
                 videosDuMoment.map((video, index) =>
                 {
                     return (
@@ -54,9 +69,7 @@ export default function LesVideosDuMoment() {
                         </div>
                         </Fragment>
                     );
-                }
-
-                )
+                })
             }
             </div>
 

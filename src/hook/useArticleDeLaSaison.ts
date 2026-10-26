@@ -1,10 +1,10 @@
-import { useContext } from "react";
-import { ArticleDeLaSaisonContext } from "../components/context/ArticleDeLaSaisonProvider";
+import { useQuery } from "@tanstack/react-query";
+import { QueryKeys } from "../queries/QueryKeys";
+import { getVideoArticleDeLaSaison } from "../service/VideoService";
 
 export function useArticleDeLaSaison() {
-    const context = useContext(ArticleDeLaSaisonContext);
-    if (! context) {
-        throw new Error("useArticleDeLaSaison doit être utilisé à l'intérieur d'un ArticleDeLaSaisonProvider");
-    }
-    return context;
+    return useQuery({
+        queryKey: QueryKeys.videos.deLaSaison(),
+        queryFn: getVideoArticleDeLaSaison,
+    });
 }
