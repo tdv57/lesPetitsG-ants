@@ -7,6 +7,7 @@ import App from "../App";
 import LesVideosDuMoment from "../components/hero/LesVideosDuMoment";
 import { NosArticles } from "../components/hero/NosArticles";
 import { NosActualites } from "../components/hero/NosActualites";
+import { Liste } from "../components/hero/Liste";
 
 export const router = createBrowserRouter([{
     children : 
@@ -34,6 +35,10 @@ export const router = createBrowserRouter([{
         {
             path: "/actualites",
             element: <NosActualites/>
+        },
+        {
+            path: "/liste",
+            element: <Liste/>
         },
         {
             path: "*",
