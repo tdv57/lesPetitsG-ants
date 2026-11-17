@@ -94,7 +94,7 @@ export class ListeClient {
         return res.json();
     }
 
-    public async createDossier(name: string): Promise<DossierListeSelectType | null> {
+    public async createDossier(name: string): Promise<DossierListeSelectType> {
         const res = await this.request('/liste/dossier', {
             method: 'POST',
             headers: {
@@ -105,8 +105,8 @@ export class ListeClient {
             })
         });
         if (!res.ok) {
-            console.warn(`createDossier a raté ${res.status}`);
-            return null;
+            const body = await res.json().catch(() => null);
+            throw new Error(body?.error ?? `Erreur, vos actions n'a pas été validé`);
         }
         return res.json();        
     }
@@ -122,8 +122,8 @@ export class ListeClient {
             })
         });
         if (!res.ok) {
-            console.warn(`updateDossier a raté ${res.status}`);
-            return null;
+            const body = await res.json().catch(() => null);
+            throw new Error(body?.error ?? `Erreur, vos actions n'a pas été validé`);
         }
         return res.json();        
     }

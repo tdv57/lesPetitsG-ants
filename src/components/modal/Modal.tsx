@@ -25,11 +25,9 @@ export function Modal({children, open, onClose, handleClick, modalTitle}: ModalP
                 onClick={handleClick}
                 className="w-full h-10 md:h-20 text-xs rounded-xl flex items-center justify-center lg:text-lg"
                 style={{
-                background: open
-                    ? COLORS.boutonInterieurClique
-                    : COLORS.boutonInterieurNonClique,
+                background: COLORS.boutonInterieurNonClique,
                 border: `2px solid ${
-                    open ? COLORS.boutonBordClique : COLORS.boutonBordNonClique
+                   COLORS.boutonBordNonClique
                 }`,
                 fontFamily: "Fredoka",
                 }}
@@ -37,14 +35,29 @@ export function Modal({children, open, onClose, handleClick, modalTitle}: ModalP
                     {modalTitle}
             </button>
             <dialog
+            className="m-auto w-[90vw] max-w-xl rounded-xl p-0"
             ref={ref}
             onClose={onClose} 
             onClick={(e) => {
                 if (e.target === ref.current) onClose();
             }}
+            style={{
+            background: COLORS.boutonInterieurNonClique,
+            border: `2px solid ${
+                COLORS.boutonBordNonClique
+            }`,
+            fontFamily: "Fredoka",
+            }}
             >
             {children}
-            <button type="button" onClick={onClose}>Fermer</button>
+            <button 
+            type="button" onClick={onClose}
+            className="block mx-auto cursor-pointer pb-1 whitespace-nowrap text-[clamp(0.6rem,1.45vw,1.125rem)] uppercase tracking-wide transition-colors hover:opacity-80"
+            style={{
+                color: COLORS.primary,
+                fontWeight: 400,
+            }}
+            >Fermer</button>
             </dialog>
         </>
 
