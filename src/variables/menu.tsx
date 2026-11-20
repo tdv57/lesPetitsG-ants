@@ -17,6 +17,10 @@ export const MENU_NOM : MenuProps[] = [
         url : "/articles"
     }, 
     {
+        nom: "Mes listes",
+        url: "/liste"
+    },
+    {
         nom: "L'article de la saison",
         url: "/article-de-la-saison"
     },

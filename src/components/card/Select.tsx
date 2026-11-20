@@ -10,9 +10,10 @@ type SelectPropType<T extends string> = {
     selected: string;
     setSelected: (prev: T) => void;
     title?: string;
+    className?: string;
 }
 
-export function Select<T extends string>({options, selected, setSelected, title} : SelectPropType<T>) {
+export function Select<T extends string>({options, selected, setSelected, title, className = "w-60 md:w-40"} : SelectPropType<T>) {
     
     const [isOpen, setIsOpen] = useState(false);
     const containerRef = useRef<HTMLDivElement>(null);
@@ -29,7 +30,7 @@ export function Select<T extends string>({options, selected, setSelected, title}
 
     
     return (
-        <div ref={containerRef} className="relative w-60 md:w-40">
+        <div ref={containerRef} className={`relative ${className}`}>
             {title && (
                 <p
                     className="mb-1 text-xs lg:text-xl text-center"
@@ -40,7 +41,8 @@ export function Select<T extends string>({options, selected, setSelected, title}
             )}
         <button
             onClick={() => setIsOpen((prev) => !prev)}
-            className="w-full h-10 md:h-20 text-xs rounded-xl flex items-center justify-center lg:text-lg"
+            title={selected}
+            className="w-full min-w-0 h-10 md:h-20 px-3 text-xs rounded-xl flex items-center justify-center lg:text-lg"
             style={{
             background: isOpen
                 ? COLORS.boutonInterieurClique
@@ -51,7 +53,7 @@ export function Select<T extends string>({options, selected, setSelected, title}
             fontFamily: "Fredoka",
             }}
         >
-            {selected}
+            <span className="block w-full truncate">{selected}</span>
         </button>
 
         <AnimatePresence>
@@ -74,7 +76,7 @@ export function Select<T extends string>({options, selected, setSelected, title}
                     setIsOpen(false);
                     setSelected(option.label as T)
                     }}
-                    className="px-3 py-2 text-xs cursor-pointer hover:bg-gray-100 flex items-center justify-center lg:text-lg text-center"
+                    className="px-3 py-2 text-xs cursor-pointer hover:bg-gray-100 flex items-center justify-center lg:text-lg text-center [overflow-wrap:anywhere]"
                     style={{
                     fontFamily: "Fredoka",
                     fontWeight: option.label === selected ? "bold" : "normal",

@@ -19,6 +19,14 @@ export const QueryKeys = {
     articles: {
         _all: ['articles'] as const,
         byArticle: (article: TypeArticleEnum) => [...QueryKeys.articles._all, article] as const,
+    },
+    listeDossier: {
+        _all: ['liste_dossier'] as const,
+        findAll: () => [...QueryKeys.listeDossier._all, "find-all"] as const,
+    },
+    listeImage: {
+        _all: ['liste_image'] as const,
+        findByDossier: (dossierId: number | undefined) => [...QueryKeys.listeImage._all, dossierId]
     }
     
 }
