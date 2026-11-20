@@ -14,6 +14,8 @@ import { ConfirmationSuppressionCard } from "../card/ConfirmationSuppressionCard
 import { ImageForm } from "../form/ImageForm";
 import { ImageListeCard } from "../card/ImageListeCard";
 import { LoadingCard } from "../card/LoadingCard";
+import { LightBoxCard } from "../card/LightBoxCard";
+import { ListeClient } from "../../client/ListeClient";
 
 export function Liste() {
     const DEFAULT_DOSSIER_NAME = "Cliquez";
@@ -21,6 +23,7 @@ export function Liste() {
     const [openDelete, setOpenDelete] = useState<boolean>(false);
     const [openUpdate, setOpenUpdate] = useState<boolean>(false);
     const [dossierName, setDossierName] = useState<string>(DEFAULT_DOSSIER_NAME);
+    const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
     const {client, handleLogout, handleLogin } = useListe();
 
     const { data: dossiers = [], isPending: isPendingDossiers } = useQuery({
@@ -88,7 +91,14 @@ export function Liste() {
         onSuccess: (_data, id) => {
             queryClient.setQueryData<DossierListeSelectType[]>(
                 QueryKeys.listeDossier.findAll(),
-                (old = []) => old.filter((dossier) => dossier.id !== id)
+                (old = []) => old.filter((dossier) => {
+                    if (dossier.id !== id) {
+                        return true;
+                    } else {
+                        if (dossier.name === dossierName) setDossierName(DEFAULT_DOSSIER_NAME);
+                        return false;
+                    }
+                })
             );
             setOpenDelete(false);
         },
@@ -109,24 +119,33 @@ export function Liste() {
         const dossier = dossiers.find(d => d.name === dossierName);
         if (!dossier) return;
         deleteDossierMutation.mutate(dossier.id);
-        if (dossier.name === dossierName) setDossierName(DEFAULT_DOSSIER_NAME);
     }
 
     const handleUpdateDossier = async (name: string) => {
+        const existingDossier = dossiers.find(d => d.name == name);
+        if (existingDossier) {
+            throw new Error("Un de vos dossiers possède déjà ce nom")
+        }
         const dossier = dossiers.find(d => d.name === dossierName);
-        if (!dossier) return;
-        updateDossierMutation.mutateAsync({ name: name, id: dossier.id });
-        setDossierName(name);
+        if (!dossier) return ;
+        await updateDossierMutation.mutateAsync({ name: name, id: dossier.id });
     }
 
-    const handleCreateImage = (image : File) => {
+    const handleCreateDossier = async (name: string) => {
+        const existingDossier = dossiers.find(d => d.name == name);
+        if (existingDossier) {
+            throw new Error("Un de vos dossiers possède déjà ce nom")
+        }
+        await createDossierMutation.mutateAsync(name)
+    }
+    const handleCreateImage = async (image : File) => {
         if (!dossierActif) return;
-        createImageMutation.mutate({ dossierId: dossierActif.id, image })
+        await createImageMutation.mutateAsync({ dossierId: dossierActif.id, image })
     }
 
     const handleDeleteImage = (imageId: number) => {
         if(!dossierActif) return;
-        deleteImageMutation.mutate({dossierId: dossierActif.id, imageId: imageId})
+        deleteImageMutation.mutateAsync({dossierId: dossierActif.id, imageId: imageId})
     }
 
     return (
@@ -140,11 +159,11 @@ export function Liste() {
             </h2>
 
         { client ?
-            <div>
-                <div  className="flex flex-col">
-                    <button 
+            <div className="flex flex-col items-center gap-6 w-full max-w-5xl px-4">
+                <div  className="flex flex-col items-center gap-4 w-full">
+                    <button
                         onClick={handleLogout}
-                        className="w-full h-10 md:h-20 text-xs rounded-xl flex items-center justify-center lg:text-lg"
+                        className="w-full max-w-xs md:w-44 md:max-w-none h-10 px-4 rounded-xl text-sm lg:text-base whitespace-nowrap flex items-center justify-center cursor-pointer transition-opacity hover:opacity-80"
                         style={{
                         background: COLORS.boutonInterieurNonClique,
                         border: `2px solid ${ COLORS.boutonBordNonClique }`,
@@ -152,43 +171,73 @@ export function Liste() {
                         }}
                     > Déconnexion 
                     </button>
-                    <div  className="flex">
+                    <div  className="flex flex-col items-center w-full gap-3 md:grid md:grid-flow-col md:auto-cols-[11rem] md:w-auto">
                         {
                             dossierName !== DEFAULT_DOSSIER_NAME &&
-                            <Modal modalTitle={"Modifier ce dossier"} handleClick={() => setOpenUpdate(true)} open={openUpdate} onClose={() => setOpenUpdate(false)}>
+                            <Modal buttonClassName="order-2 w-full max-w-xs md:order-1 md:w-full md:max-w-none" modalTitle={<><span className="md:hidden">Modifier le dossier</span><span className="hidden md:inline">Modifier</span></>} handleClick={() => setOpenUpdate(true)} open={openUpdate} onClose={() => setOpenUpdate(false)}>
                                 <DossierForm onSubmit={({ name }) => handleUpdateDossier(name)}/>
-                            </Modal>   
+                            </Modal>
                         }
-                        <Modal modalTitle={"Créez un nouveau dossier"} handleClick={() => setOpenCreate(true)} open={openCreate} onClose={() => setOpenCreate(false)}>
-                            <DossierForm onSubmit={(dossierData) => createDossierMutation.mutateAsync(dossierData.name)}/>
-                        </Modal>    
+                        <Modal buttonClassName="order-1 w-full max-w-xs md:order-2 md:w-full md:max-w-none" modalTitle={"Nouveau dossier"} handleClick={() => setOpenCreate(true)} open={openCreate} onClose={() => setOpenCreate(false)}>
+                            <DossierForm onSubmit={(dossierData) => handleCreateDossier(dossierData.name)}/>
+                        </Modal>
                         {
                             dossierName !== DEFAULT_DOSSIER_NAME &&
-                            <Modal modalTitle={"Supprimer ce dossier"} handleClick={() => setOpenDelete(true)} open={openDelete} onClose={() => setOpenDelete(false)}>
-                                <ConfirmationSuppressionCard onDelete={() => handleDeleteDossier()}/>
+                            <Modal buttonClassName="order-3 w-full max-w-xs md:w-full md:max-w-none" modalTitle={<><span className="md:hidden">Supprimer le dossier</span><span className="hidden md:inline">Supprimer</span></>} handleClick={() => { deleteDossierMutation.reset(); setOpenDelete(true);}} open={openDelete} onClose={() => { deleteDossierMutation.reset(); setOpenDelete(false);}}>
+                                <ConfirmationSuppressionCard onDelete={() => handleDeleteDossier()} error={deleteDossierMutation.error?.message}/>
                             </Modal>  
                         }
                     </div>
                     {
-                        isPendingDossiers ? 
-                        <LoadingCard/> //Change la classeSize pour avoir un truc plus petit
+                        isPendingDossiers ?
+                        <LoadingCard compact sizeClassName="w-20 h-20 md:w-24 md:h-24"/>
                         :
-                        <div  className="flex justify-center">
-                            { dossiers.length > 0 && <Select options={optionDossiers} selected={dossierName} setSelected={setDossierName} title="Sélectionnez votre dossier"/> }
+                        <div  className="flex justify-center w-full">
+                            { dossiers.length > 0 && <Select className="w-full max-w-xs md:w-40 md:max-w-none" options={optionDossiers} selected={dossierName} setSelected={(name: string) => { setDossierName(name); setLightboxIndex(null); }} title="Choisir mon dossier ▼"/> }
                         </div>
                     }
-
                 </div>
                 {
                     dossierName !== DEFAULT_DOSSIER_NAME && 
-                    <div>
-                        <ImageForm onSubmit={({image}) => handleCreateImage(image)}/>
-                            {isPendingImages ? 
-                            <LoadingCard/>
-                            :
-                            images.map((image) => (
-                                <ImageListeCard image={image} onDelete={() => handleDeleteImage(image.id)}/>
-                            ))}
+                    <div className="flex flex-col items-center gap-6 w-full">
+                        <div className="w-full max-w-xl">
+                            <ImageForm onSubmit={({image}) => handleCreateImage(image)}/>
+                        </div>
+                        {isPendingImages ?
+                        <LoadingCard/>
+                        :
+                        <>
+                            { images.length > 0 && 
+                            <p                      
+                                className="w-full max-w-xl px-8 mb-1 text-xs lg:text-xl text-center"
+                                style={{ fontFamily: "Fredoka", color: COLORS.primary }}
+                            >
+                            Cliquez sur une image pour l'afficher en grand. 
+                            Vous pourrez ensuite naviguer entre vos images à l'aide des flèches 
+                            à gauche et à droite.                            
+                            </p>
+                            }
+                            <div className="flex flex-wrap justify-center gap-6 pb-8">
+
+                                {images.map((image, i) => (
+                                    <ImageListeCard 
+                                        key={image.id} 
+                                        image={image} 
+                                        onOpen={() => setLightboxIndex(i)}
+                                        onDelete={() => handleDeleteImage(image.id)}/>
+                                ))}
+                            </div>
+                        </>
+                        }
+                        {lightboxIndex !== null && images[lightboxIndex] && (
+                            <LightBoxCard
+                                srcs={images.map((img) => ListeClient.R2_BUCKET_LISTE + "/" + img.code)}
+                                index={lightboxIndex}
+                                onClose={() => setLightboxIndex(null)}
+                                onChange={setLightboxIndex}
+                            />
+                        )}
+                        
                     </div>
                 }
             </div>

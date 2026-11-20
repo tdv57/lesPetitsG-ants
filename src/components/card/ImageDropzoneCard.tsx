@@ -46,6 +46,9 @@ export function ImageDropzoneCard({ value, onChange, error }: Props) {
           Vous pouvez cliquer ou faire glisser une image pour sélectionner une
           image
         </p>
+        <p style={{ color: "red" }}>
+          Cliquez ensuite sur le bouton ci-dessous pour valider l'ajout de l'image
+        </p>
 
         {value && (
           <p className="text-sm opacity-70">

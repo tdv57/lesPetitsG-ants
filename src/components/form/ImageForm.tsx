@@ -1,6 +1,6 @@
 import z from "zod"
 import { imageValidationSchema } from "./validation/ImageValidation"
-import { Controller, useForm } from "react-hook-form";
+import { Controller, useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { COLORS } from "../../variables/couleur";
 import { ImageDropzoneCard } from "../card/ImageDropzoneCard";
@@ -21,14 +21,26 @@ export function ImageForm({onSubmit}: ImageListeFormProps) {
     control,
     handleSubmit,
     reset,
-    formState: {errors, isSubmitting}
+    setError,
+    formState: {isSubmitting, errors}
   } = useForm<imageFormInputType, unknown, imageFormOutputType>({
     resolver: zodResolver(imageFormSchema),
     defaultValues: { image: null}
   });
 
-  function submitAndReset(image: {image: File}) {
-    onSubmit(image);
+  const image = useWatch({ control, name: "image" });
+  const hasImage = !!image;
+
+  async function submitAndReset(image: {image: File}) {
+    try {
+      await onSubmit(image);
+    } catch (e) {
+      console.log("catch");
+      setError('root.serverError', {
+        message: e instanceof Error ? e.message : 'Une erreur est survenue',
+      });
+      return;
+    }
     reset();
   }
   return (
@@ -45,17 +57,18 @@ export function ImageForm({onSubmit}: ImageListeFormProps) {
                 />
               )}
             />
-        {errors.image && <span className="text-sm text-red-600" role="alert">{errors.image.message}</span>}
+          {errors.root?.serverError && <span className="text-sm text-red-600" role="alert">{errors.root.serverError.message}</span>}
           <button 
           type="submit" disabled={isSubmitting}
-          className="cursor-pointer pb-1 whitespace-nowrap text-[clamp(0.6rem,1.45vw,1.125rem)] uppercase tracking-wide transition-colors hover:opacity-80"
+          className="min-h-10 sm:min-h-12 px-4 py-2 rounded-xl text-xs sm:text-sm lg:text-base uppercase tracking-wide whitespace-normal text-center cursor-pointer transition-opacity hover:opacity-80 disabled:opacity-50 disabled:cursor-not-allowed"
           style={{
+              background: COLORS.boutonInterieurNonClique,
               color: COLORS.textDark,
               fontWeight: 400,
               border: `2px solid ${COLORS.boutonBordNonClique}`,
               fontFamily: "Fredoka",
           }}
-          >Ajouter une image à votre dossier</button>
+          >{ hasImage ? "Validez en cliquant ici pour ajouter l'image" : "Ajouter une image à votre dossier"}</button>
       </form>
     </div>
   );

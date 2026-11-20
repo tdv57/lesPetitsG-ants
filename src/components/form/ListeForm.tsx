@@ -37,7 +37,7 @@ export default function ListeForm({ onSubmit }: ListeFormPropsType) {
         <label htmlFor="name"
         className="mx-auto"
           style={{
-              color:  COLORS.primary,
+              color:  COLORS.textDark,
               fontWeight:  400,
               fontFamily: "Fredoka",
           }}>Rentrez votre numéro de téléphone</label>

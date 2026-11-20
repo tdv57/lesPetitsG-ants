@@ -106,7 +106,7 @@ export class ListeClient {
         });
         if (!res.ok) {
             const body = await res.json().catch(() => null);
-            throw new Error(body?.error ?? `Erreur, vos actions n'a pas été validé`);
+            throw new Error(body?.error ?? `Erreur, votre action n'a pas été validé`);
         }
         return res.json();        
     }
@@ -123,7 +123,7 @@ export class ListeClient {
         });
         if (!res.ok) {
             const body = await res.json().catch(() => null);
-            throw new Error(body?.error ?? `Erreur, vos actions n'a pas été validé`);
+            throw new Error(body?.error ?? `Erreur, votre action n'a pas été validé`);
         }
         return res.json();        
     }
@@ -135,8 +135,9 @@ export class ListeClient {
                 'Content-Type': 'application/json'
             }, 
         });
-        if(!res.ok) {
-            console.warn(`deleteDossier a raté ${res.status}`);
+        if (!res.ok) {
+            const body = await res.json().catch(() => null);
+            throw new Error(body?.error ?? `Erreur, votre action n'a pas été validé`);
         }
     }
 
@@ -162,8 +163,8 @@ export class ListeClient {
             body: formData
         });
         if (!res.ok) {
-            console.warn(`createImage a raté ${res.status}`);
-            return null;
+            const body = await res.json().catch(() => null);
+            throw new Error(body?.error ?? `Erreur, votre action n'a pas été validé`);
         }
         return res.json();      
     }

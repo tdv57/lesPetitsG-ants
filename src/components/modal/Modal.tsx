@@ -6,10 +6,11 @@ type ModalPropsType = {
     open: boolean;
     onClose: () => void;
     handleClick: () => void;
-    modalTitle: string;
+    modalTitle: React.ReactNode;
+    buttonClassName?: string;
 }
 
-export function Modal({children, open, onClose, handleClick, modalTitle}: ModalPropsType) {
+export function Modal({children, open, onClose, handleClick, modalTitle, buttonClassName = ""}: ModalPropsType) {
     const ref = useRef<HTMLDialogElement>(null);
 
     useEffect(() => {
@@ -23,7 +24,7 @@ export function Modal({children, open, onClose, handleClick, modalTitle}: ModalP
         <>
             <button 
                 onClick={handleClick}
-                className="w-full h-10 md:h-20 text-xs rounded-xl flex items-center justify-center lg:text-lg"
+                className={`h-10 px-4 rounded-xl text-sm lg:text-base whitespace-nowrap flex items-center justify-center cursor-pointer transition-opacity hover:opacity-80 ${buttonClassName}`}
                 style={{
                 background: COLORS.boutonInterieurNonClique,
                 border: `2px solid ${
@@ -49,7 +50,7 @@ export function Modal({children, open, onClose, handleClick, modalTitle}: ModalP
             fontFamily: "Fredoka",
             }}
             >
-            {children}
+            {open && children}
             <button 
             type="button" onClick={onClose}
             className="block mx-auto cursor-pointer pb-1 whitespace-nowrap text-[clamp(0.6rem,1.45vw,1.125rem)] uppercase tracking-wide transition-colors hover:opacity-80"

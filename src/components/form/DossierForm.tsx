@@ -5,7 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { COLORS } from "../../variables/couleur";
 
 type DossierFormPropsType = {
-    onSubmit: (dossierData: {name: string}) => void;
+    onSubmit: (dossierData: {name: string}) => Promise<unknown>;
 }
 
 const dossierFormSchema = z.object({
@@ -27,9 +27,9 @@ export default function DossierForm({ onSubmit }: DossierFormPropsType) {
     defaultValues: { name: ''}
   });
 
-  function submitAndReset(dossierData: {name: string}) {
+  async function submitAndReset(dossierData: {name: string}) {
     try {
-      onSubmit(dossierData);
+      await onSubmit(dossierData);
     } catch (e) {
       console.log("catch");
       setError('root.serverError', {
